@@ -1,0 +1,19 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+        {% if request.user.is_authenticated %}
+        <div class="info-box">
+            <h3>Tests</h3>
+        </div>
+
+            {% for test in tests %}
+                <div class="info-box">
+                    {{ test.title }}
+                    {{ test.duration }}
+                    {{ test.start_time }}
+                </div>
+            {% endfor %}
+        {% else %}
+        	<h1>Home</h1>
+        {% endif %}
+{% endblock content %}

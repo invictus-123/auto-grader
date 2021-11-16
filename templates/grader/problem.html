@@ -1,0 +1,46 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+    <div class="mt-5">
+        <div class="row">
+
+            <!-- Problem Statement -->
+            <div class="col-lg-6">
+                <article>
+                    <header class="mb-4">
+                        <h3 class="fw-b mb-2">{{ prob.title }}</h3>
+                        <!-- <div class="text-muted fst-italic mb-2">{{ test.start_time|date:"M d, Y, H:i" }}</div> -->
+                        <div class="text-muted fst-italic mb-2">{{ prob.data.type|title }}</div>
+                    </header>
+
+                    <section class="mb-4">
+                        <p class="fs-5 mb-4">
+                            {{ prob.data.statement }}
+                        </p>
+                    </section>
+                </article>
+                <section class="mb-5">
+                    <p class="fs-5 mb-2">
+                        $\textbf{Sample Input:}$
+                    </p>
+                    <p>
+                        {{ prob.data.sample_input }}
+                    </p>
+                    <p class="fs-5 mb-2">
+                        $\textbf{Expected Output:}$
+                    </p>
+                    <p>
+                        {{ sample_output }}
+                    </p>
+
+                </section>
+
+            </div>
+
+            <!-- Code Editor -->
+            <div class="col-lg-6 code-editor">
+                <textarea id="code" placeholder="Enter your code here"></textarea>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
