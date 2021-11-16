@@ -2,23 +2,6 @@ from django import forms
 from grader.models import UserRole, StudentDetail
 from django.contrib.auth.models import User
 
-class LoginForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
-
-        self.fields['username'].help_text = None
-
-    password = forms.CharField(widget = forms.PasswordInput(attrs = {'minlength': '8', 'class': 'form-control', 'id': "password", 'name': 'password', 'data-eye': 'true'}))
-
-    class Meta():
-        model = User
-        fields = ('username', 'password')
-
-        widgets = {
-            'username': forms.TextInput(attrs = {'class': 'form-control', 'id': 'username', 'name': 'username'}),
-        }
-
-
 class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)

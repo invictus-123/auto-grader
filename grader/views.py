@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from grader.forms import UserForm, UserRoleForm, StudentDetailsForm, LoginForm
+from grader.forms import UserForm, UserRoleForm, StudentDetailsForm
 from django.contrib.auth.models import User
 from grader.models import UserRole, StudentDetail, Test, Problem
 from django.contrib.auth import authenticate, login, logout
@@ -24,24 +24,25 @@ def index(request):
 
 def signin(request):
 
+	if request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('index'))
+
 	if request.method == 'POST':
-		form = LoginForm(request.POST)
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 
 		user = authenticate(username = username, password = password)
 
+		print('hi')
 		if user:
+			print(username,password)
 			if user.is_active:
+				print(username,password)
 				login(request, user)
 				return HttpResponseRedirect(reverse('index'))
 
-	else:
-		form = LoginForm()
-
 	context = {
 		'title': 'Sign In',
-		'form': form,
 	}
 	return render(request, 'grader/signin.html', context=context)
 
@@ -51,7 +52,9 @@ def signout(request):
 	return HttpResponseRedirect(reverse('index'))
 
 def signup(request):
-	registered = False
+
+	if request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('index'))
 
 	if request.method == 'POST':
 		user_form = UserForm(request.POST)
@@ -73,8 +76,15 @@ def signup(request):
 				detail.user = user
 				detail.save()
 
-			registered = True
-			return HttpResponseRedirect(reverse('login'))
+			username = request.POST.get('username')
+			password = request.POST.get('password')
+
+			user = authenticate(username = username, password = password)
+
+			if user:
+				if user.is_active:
+					login(request, user)
+					return HttpResponseRedirect(reverse('index'))
 
 	else:
 		user_form = UserForm()
@@ -86,13 +96,12 @@ def signup(request):
 		'user_form': user_form,
 		'role_form': role_form,
 		'details_form': student_details_form,
-		'registered': 'registered'
 	}
 	return render(request, 'grader/signup.html', context=context)
 
-
+@login_required
 def problem(request, problem_link):
-	
+
 	try:
 		prob = Problem.objects.get(link = problem_link)
 		context = {
