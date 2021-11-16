@@ -28,7 +28,7 @@ SECRET_KEY = '6*syjry$%l&*i35t&znnc4ohk5q79l0$&zc+6y$i)niqgdbm$1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.radiant-wildwood-82518.com']
 
 
 # Application definition
