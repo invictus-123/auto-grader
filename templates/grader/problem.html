@@ -5,7 +5,7 @@
         <div class="row">
 
             <!-- Problem Statement -->
-            <div class="col-lg-6">
+            <div class="col-lg-6 test">
                 <article>
                     <header class="mb-4">
                         <h3 class="fw-b mb-2">{{ prob.title }}</h3>
@@ -40,6 +40,13 @@
             <!-- Code Editor -->
             <div class="col-lg-6 code-editor">
                 <textarea id="code" placeholder="Enter your code here"></textarea>
+                <p>
+                    <button type="button" id="run-code" class="run-code btn btn-primary">Run Sample</button>
+                    <button type="button" id="submit-code" class="submit-code btn btn-primary">Submit</button>
+                </p>
+                <div id="sample-run" style="display:none;">
+                    Verdict
+                </div>
             </div>
         </div>
     </div>

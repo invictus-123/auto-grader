@@ -1,0 +1,28 @@
+.code-editor {
+    height: 40em;
+    margin: 5px 0px;
+    padding: 0px;
+}
+
+.submit-code, .run-code {
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+}
+
+#code {
+    background-color: #3b0952;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 1em;
+    outline: none !important;
+    font-size: 1.5em;
+    color: white;
+    border: 2px soli black;
+    border-radius: 2%;
+}
+
+#sample-run {
+    padding-left: 1em;
+    padding-bottom: 5em;
+}

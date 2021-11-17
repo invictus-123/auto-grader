@@ -1,5 +1,4 @@
 'use strict';
-console.log($(this));
 $(function() {
 
 	$("input[type='password'][data-eye]").each(function(i) {
@@ -73,5 +72,4 @@ $(function() {
             $('#spoiler').hide();
         }
     });
-
 });
