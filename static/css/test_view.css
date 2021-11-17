@@ -1,0 +1,6 @@
+.test-card {
+	border: 2px solid black;
+	margin-top: 3%;
+	border-radius: 1%;
+    font-family: monospace;
+}

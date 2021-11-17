@@ -8,5 +8,6 @@ urlpatterns = [
 	path('signin', views.signin, name='signin'),
 	path('signup', views.signup, name='signup'),
 	path('signout', views.signout, name='signout'),
-	url(r'^problem/(?P<problem_link>\w+)$', views.problem, name='problem')
+	url(r'^test/(?P<test_link>\w+)$', views.test_view, name='test'),
+	url(r'^problem/(?P<problem_link>\w+)$', views.problem_view, name='problem'),
 ]

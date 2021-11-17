@@ -2,15 +2,21 @@
 
 {% block content %}
         {% if request.user.is_authenticated %}
-        <div class="info-box">
-            <h3>Tests</h3>
-        </div>
-
             {% for test in tests %}
-                <div class="info-box">
-                    {{ test.title }}
-                    {{ test.duration }}
-                    {{ test.start_time }}
+                <div class="test-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ test.title|title}}</h5>
+                        <p class="card-text">
+                            Start Time: {{ test.start_time}}
+                        </p>
+                        <p class="card-text">
+                            Duration: {{ test.duration }} minutes
+                        </p>
+                        <p class="card-text">
+                            Teacher: {{ test.user.username }}
+                        </p>
+                        <a class="btn btn-primary" href="{% url 'test' test.link %}">Open</a>
+                    </div>
                 </div>
             {% endfor %}
         {% else %}

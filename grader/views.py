@@ -17,8 +17,9 @@ def index(request):
 		context['role'] = role
 
 		if role == 'teacher':
-			tests = request.user.test_set.all().filter(has_expired = False).order_by('-start_time')
+			tests = request.user.test_set.all().filter(has_expired = False).order_by('start_time')
 			context['tests'] = tests
+			print(tests[0].link)
 
 	return render(request, 'grader/index.html', context=context)
 
@@ -45,11 +46,6 @@ def signin(request):
 		'title': 'Sign In',
 	}
 	return render(request, 'grader/signin.html', context=context)
-
-@login_required
-def signout(request):
-	logout(request)
-	return HttpResponseRedirect(reverse('index'))
 
 def signup(request):
 
@@ -100,7 +96,21 @@ def signup(request):
 	return render(request, 'grader/signup.html', context=context)
 
 @login_required
-def problem(request, problem_link):
+def signout(request):
+	logout(request)
+	return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def test_view(request, test_link):
+
+	try:
+		test = Test.objects.get(link = test_link)
+		return HttpResponse('found')
+	except:
+		return HttpResponse('Test not found')
+
+@login_required
+def problem_view(request, problem_link):
 
 	try:
 		prob = Problem.objects.get(link = problem_link)
