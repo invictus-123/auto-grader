@@ -127,3 +127,7 @@ def problem_view(request, problem_link):
 	except:
 		return HttpResponse('Problem not found')
 	return render(request, 'grader/problem.html', context=context)
+
+@login_required
+def submission(request, problem_link):
+	return HttpResponse('Submission')
