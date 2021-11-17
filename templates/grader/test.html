@@ -1,0 +1,22 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+    {% for problem in problems %}
+        <div class="test-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ problem.title|title }}</h5>
+                <p class="card-text">
+                    Coding
+                    <!-- {% if problem.type == 'coding '%}
+                        Coding
+                    {% elif problem.type == 'mcq' %}
+                        MCQ
+                    {% else %}
+                        Subjective
+                    {% endif %} -->
+                </p>
+                <a class="btn btn-primary" href="{% url 'problem' problem.link %}">Open</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}

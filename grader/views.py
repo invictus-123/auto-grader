@@ -19,7 +19,10 @@ def index(request):
 		if role == 'teacher':
 			tests = request.user.test_set.all().filter(has_expired = False).order_by('start_time')
 			context['tests'] = tests
-			print(tests[0].link)
+		else:
+			details = StudentDetail.objects.get(user = request.user)
+			tests = Test.objects.all().filter(has_expired = False, branch = details.branch, semester = details.semester).order_by('start_time')
+			context['tests'] = tests
 
 	return render(request, 'grader/index.html', context=context)
 
@@ -34,11 +37,8 @@ def signin(request):
 
 		user = authenticate(username = username, password = password)
 
-		print('hi')
 		if user:
-			print(username,password)
 			if user.is_active:
-				print(username,password)
 				login(request, user)
 				return HttpResponseRedirect(reverse('index'))
 
@@ -105,7 +105,12 @@ def test_view(request, test_link):
 
 	try:
 		test = Test.objects.get(link = test_link)
-		return HttpResponse('found')
+		problems = Problem.objects.all().filter(test = test)
+		context = {
+			'title': 'Test - ' + test.title,
+			'problems': problems
+		}
+		return render(request, 'grader/test.html', context=context)
 	except:
 		return HttpResponse('Test not found')
 
@@ -115,7 +120,7 @@ def problem_view(request, problem_link):
 	try:
 		prob = Problem.objects.get(link = problem_link)
 		context = {
-			'title': 'Problem',
+			'title': 'Problem - ' + prob.title,
 			'prob': prob,
 			'sample_output': '9'
 		}
