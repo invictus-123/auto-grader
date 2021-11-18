@@ -139,7 +139,16 @@ def create_test(request):
 	if role == 'student':
 		return HttpResponseRedirect(reverse('index'))
 
+	return HttpResponse('Working')
+
+@login_required
+def create_problem(request):
+
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('index'))
+
 	context = {
 		'title': 'Create Test',
 	}
-	return render(request, 'grader/create_test.html', context=context)
+	return render(request, 'grader/create_problem.html', context=context)

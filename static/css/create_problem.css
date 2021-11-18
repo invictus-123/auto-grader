@@ -1,5 +1,6 @@
 .heading {
-    margin-top: 25px;
+    margin-top: 50px;
+    margin-bottom: 10px;
 }
 
 .tcn {
@@ -25,6 +26,19 @@ td .text-center {
     resize: none;
     width: 100%;
     height: 200px;
+    font-family: monospace;
+}
+
+.space {
+    height: 50px;
+}
+
+.create-button {
+    margin-top: 50px;
+}
+
+.create-button a {
+    color: white;
 }
 
 #addBtn {
@@ -33,5 +47,4 @@ td .text-center {
 
 #addBtn i {
     margin-left: 5px;
-    margin-top: 5px;
 }

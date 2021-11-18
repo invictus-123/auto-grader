@@ -3,10 +3,11 @@
 {% block content %}
 
     <h5 class="heading">Title</h5>
+    <input type="text" name="title" value="">
     <h5 class="heading">Statement</h5>
     <h5 class="heading">Sample Input</h5>
     <h5 class="heading">Test Cases</h5>
-    <div class="pt-4">
+    <div class="">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -17,15 +18,26 @@
                     </tr>
                 </thead>
                 <tbody id="tbody">
-                
+
                 </tbody>
             </table>
         </div>
-        <button class="btn btn-md btn-primary"
-            id="addBtn" type="button">
+        <button class="btn btn-md btn-primary" id="addBtn" type="button">
             Test case <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
     </div>
     <h5 class="heading">Solution</h5>
+    <div class="code-editor">
+        <textarea id="code" placeholder="Enter your code here"></textarea>
+    </div>
     <h5 class="heading">Marks</h5>
+    <input type="text" name="marks" value="">
+    <div class="create-button">
+        <button class="btn btn-primary" type="button">
+            Create
+        </button>
+    <div>
+    <div class="space">
+
+    </div>
 {% endblock content %}
