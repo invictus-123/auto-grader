@@ -1,0 +1,31 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+
+    <h5 class="heading">Title</h5>
+    <h5 class="heading">Statement</h5>
+    <h5 class="heading">Sample Input</h5>
+    <h5 class="heading">Test Cases</h5>
+    <div class="pt-4">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center tcn">Test Case Number</th>
+                        <th class="text-center tcd">Test Case Data</th>
+                        <th class="text-center">Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                
+                </tbody>
+            </table>
+        </div>
+        <button class="btn btn-md btn-primary"
+            id="addBtn" type="button">
+            Test case <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+    <h5 class="heading">Solution</h5>
+    <h5 class="heading">Marks</h5>
+{% endblock content %}

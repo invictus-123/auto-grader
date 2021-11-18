@@ -131,3 +131,15 @@ def problem_view(request, problem_link):
 @login_required
 def submission(request, problem_link):
 	return HttpResponse('Submission')
+
+@login_required
+def create_test(request):
+
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('index'))
+
+	context = {
+		'title': 'Create Test',
+	}
+	return render(request, 'grader/create_test.html', context=context)
