@@ -66,6 +66,7 @@ $(function() {
 
     $(document).on('change','#role',function() {
         if($("#role option:selected").text() == 'Student'){
+            console.log($("#role option:selected").text());
             $('#spoiler').show();
         }
         else {
