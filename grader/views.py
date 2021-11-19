@@ -127,10 +127,10 @@ def problem_view(request, problem_link):
 
 	try:
 		problem = Problem.objects.get(link = problem_link)
-		print(problem.data)
 		context = {
 			'title': 'Problem - ' + problem.title,
 			'problem': problem,
+			'test_link': problem.test.link,
 			'sample_output': '9'
 		}
 	except:

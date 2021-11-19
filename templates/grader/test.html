@@ -13,14 +13,13 @@
             <div class="card-body">
                 <h5 class="card-title">{{ problem.title|title }}</h5>
                 <p class="card-text">
-                    Coding
-                    <!-- {% if problem.type == 'coding '%}
+                    {% if problem.type == 'coding'%}
                         Coding
                     {% elif problem.type == 'mcq' %}
                         MCQ
                     {% else %}
                         Subjective
-                    {% endif %} -->
+                    {% endif %}
                 </p>
                 <a class="btn btn-primary" href="{% url 'problem' problem.link %}">Open</a>
             </div>
