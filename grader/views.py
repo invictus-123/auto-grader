@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-import hashlib, random, datetime
+from django.utils import timezone
+import hashlib, random, datetime, pytz
 
 def index(request):
 	context = {
@@ -147,14 +148,14 @@ def create_test(request):
 		branch = request.POST.get('branch')
 		type = request.POST.get('type')
 		duration = request.POST.get('duration')
-		start_time = datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M')
+		start_time = pytz.utc.localize(datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M'))
 		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
 
-		if datetime.datetime.now() < start_time:
+		if timezone.now() < start_time:
 			has_expired = False
 		else:
-			delta = datetime.datetime.now() - start_time
-			has_expired = True if delta.total_seconds() / 60 >= duration else False
+			delta = timezone.now() - start_time
+			has_expired = True if delta.total_seconds() / 60 >= int(duration) else False
 
 		test = Test(
 			user = request.user,
