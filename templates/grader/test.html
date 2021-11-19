@@ -1,6 +1,13 @@
 {% extends "grader/base.html" %}
 
 {% block content %}
+
+    {% if is_teacher %}
+        <div class="space">
+        </div>
+        <a class="btn btn-primary" href="{% url 'create-problem' test_link %}">Create Problem</a>
+    {% endif %}
+
     {% for problem in problems %}
         <div class="test-card">
             <div class="card-body">

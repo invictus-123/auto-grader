@@ -109,8 +109,13 @@ def test_view(request, test_link):
 	try:
 		test = Test.objects.get(link = test_link)
 		problems = Problem.objects.all().filter(test = test)
+		username = request.user.username
+		role = UserRole.objects.get(user = request.user).role
+		is_teacher = True if role == 'teacher' else False
 		context = {
 			'title': 'Test - ' + test.title,
+			'is_teacher': is_teacher,
+			'test_link': test_link,
 			'problems': problems
 		}
 		return render(request, 'grader/test.html', context=context)
@@ -121,10 +126,11 @@ def test_view(request, test_link):
 def problem_view(request, problem_link):
 
 	try:
-		prob = Problem.objects.get(link = problem_link)
+		problem = Problem.objects.get(link = problem_link)
+		print(problem.data)
 		context = {
-			'title': 'Problem - ' + prob.title,
-			'prob': prob,
+			'title': 'Problem - ' + problem.title,
+			'problem': problem,
 			'sample_output': '9'
 		}
 	except:
@@ -146,8 +152,7 @@ def create_test(request):
 		title = request.POST.get('title')
 		semester = request.POST.get('semester')
 		branch = request.POST.get('branch')
-		type = request.POST.get('type')
-		duration = request.POST.get('duration')
+		duration = int(request.POST.get('duration'))
 		start_time = pytz.utc.localize(datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M'))
 		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
 
@@ -155,7 +160,7 @@ def create_test(request):
 			has_expired = False
 		else:
 			delta = timezone.now() - start_time
-			has_expired = True if delta.total_seconds() / 60 >= int(duration) else False
+			has_expired = True if delta.total_seconds() / 60 >= duration else False
 
 		test = Test(
 			user = request.user,
@@ -163,7 +168,6 @@ def create_test(request):
 			link = link,
 			semester = semester,
 			branch = branch,
-			type = type,
 			duration = duration,
 			start_time = start_time,
 			has_expired = has_expired
@@ -171,19 +175,52 @@ def create_test(request):
 
 		test.save()
 
+		return HttpResponseRedirect(reverse('index'))
+
 	context = {
 		'title': 'Create Test',
 	}
 	return render(request, 'grader/create_test.html', context=context)
 
 @login_required
-def create_problem(request):
+def create_problem(request, test_link):
 
 	role = UserRole.objects.get(user = request.user).role
 	if role == 'student':
 		return HttpResponseRedirect(reverse('index'))
 
+	if request.method == 'POST':
+		test = Test.objects.get(link = test_link)
+
+		title = request.POST.get('title')
+		statement = request.POST.get('statement')
+		type = request.POST.get('type')
+		test_cases = request.POST.get('test-case')
+		sample_input = request.POST.get('sample-input')
+		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+		solution = request.POST.get('code')
+		marks = int(request.POST.get('marks'))
+
+		prob = Problem(
+			test = test,
+			title = title,
+			type = type,
+			link = link,
+			data = {
+				'statement': statement,
+				'sample_input': sample_input,
+				'tests': test_cases,
+				'solution': solution,
+				'marks': marks
+			}
+		)
+
+		prob.save()
+
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
 	context = {
 		'title': 'Create Problem',
+		'test_link': test_link,
 	}
 	return render(request, 'grader/create_problem.html', context=context)

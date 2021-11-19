@@ -25,7 +25,6 @@ class Test(models.Model):
     link = models.CharField(max_length = 255)
     semester = models.IntegerField()
     branch = models.CharField(max_length = 255)
-    type = models.CharField(max_length = 255)
     duration = models.IntegerField()
     start_time = models.DateTimeField()
     has_expired = models.BooleanField(default = False)
@@ -37,6 +36,7 @@ class Problem(models.Model):
     problem_id = models.AutoField(primary_key = True)
     test = models.ForeignKey(Test, on_delete = models.CASCADE)
     title = models.CharField(max_length = 255)
+    type = models.CharField(max_length = 255)
     link = models.CharField(max_length = 255)
     data = JSONField()
 

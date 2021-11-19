@@ -1,12 +1,10 @@
-var problemRowIdx = 0;
-
 var testRowIdx = 0;
 
 $('#addBtn').on('click', function () {
     var newRow = `
         <tr id="R${++ testRowIdx}">
             <td class="row-index text-center"><p>#${testRowIdx}</p></td>
-            <td class="text-center"><textarea type="text" class="test-data"></textarea></td>
+            <td class="text-center"><textarea type="text" class="test-data" name="test-case" required></textarea></td>
             <td class="text-center"><a class="btn btn-xs delete-record remove" data-id="3"><i class="fa fa-trash-o" style="font-size:24px"></i></a></td>
         </tr>
     `

@@ -13,15 +13,23 @@
                     <label for="title">Title:</label>
                     <input type="text" name="title" id="title" class="form-control mb-3" required>
 
+                    <label for="type">Type:</label>
+                    <select class="form-control" name="type" id="type">
+                        <option value="coding">Coding</option>
+                        <option value="mcq">MCQ</option>
+                        <option value="subjective">Subjective</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
                     <label for="statement">Statement:</label>
                     <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10" required></textarea>
 
-                    <label for="sampleinput">Sample Input:</label>
-                    <textarea name="sampleinput" id="sampleinput" class="form-control mb-3 test-data" rows="5" required></textarea>
+                    <label for="sample-input">Sample Input:</label>
+                    <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5" required></textarea>
 
-                    <label for="testcases">Test Cases:</label>
+                    <label for="test-cases">Test Cases:</label>
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="testcases">
+                        <table class="table table-bordered" id="test-cases">
                             <thead>
                                 <tr>
                                     <th class="text-center tcn">Test Case Number</th>
