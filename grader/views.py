@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+import hashlib, random, datetime
 
 def index(request):
 	context = {
@@ -18,6 +19,7 @@ def index(request):
 
 		if role == 'teacher':
 			tests = request.user.test_set.all().filter(has_expired = False).order_by('start_time')
+			context['is_teacher'] = True
 			context['tests'] = tests
 		else:
 			details = StudentDetail.objects.get(user = request.user)
@@ -139,7 +141,39 @@ def create_test(request):
 	if role == 'student':
 		return HttpResponseRedirect(reverse('index'))
 
-	return HttpResponse('Working')
+	if request.method == 'POST':
+		title = request.POST.get('title')
+		semester = request.POST.get('semester')
+		branch = request.POST.get('branch')
+		type = request.POST.get('type')
+		duration = request.POST.get('duration')
+		start_time = datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M')
+		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+
+		if datetime.datetime.now() < start_time:
+			has_expired = False
+		else:
+			delta = datetime.datetime.now() - start_time
+			has_expired = True if delta.total_seconds() / 60 >= duration else False
+
+		test = Test(
+			user = request.user,
+			title = title,
+			link = link,
+			semester = semester,
+			branch = branch,
+			type = type,
+			duration = duration,
+			start_time = start_time,
+			has_expired = has_expired
+		)
+
+		test.save()
+
+	context = {
+		'title': 'Create Test',
+	}
+	return render(request, 'grader/create_test.html', context=context)
 
 @login_required
 def create_problem(request):
@@ -149,6 +183,6 @@ def create_problem(request):
 		return HttpResponseRedirect(reverse('index'))
 
 	context = {
-		'title': 'Create Test',
+		'title': 'Create Problem',
 	}
 	return render(request, 'grader/create_problem.html', context=context)

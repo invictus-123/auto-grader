@@ -1,42 +1,66 @@
 {% extends "grader/base.html" %}
 
 {% block content %}
+    <div class="space">
+    </div>
+    <div class="h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="w-75">
+                <h4 class="card-title">Create Problem</h4>
+                <form method="POST" class="my-login-validation">
+                    {% csrf_token %}
 
-    <h5 class="heading">Title</h5>
-    <input type="text" name="title" value="">
-    <h5 class="heading">Statement</h5>
-    <h5 class="heading">Sample Input</h5>
-    <h5 class="heading">Test Cases</h5>
-    <div class="">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-center tcn">Test Case Number</th>
-                        <th class="text-center tcd">Test Case Data</th>
-                        <th class="text-center">Remove</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" class="form-control mb-3" required>
 
-                </tbody>
-            </table>
+                    <label for="statement">Statement:</label>
+                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10" required></textarea>
+
+                    <label for="sampleinput">Sample Input:</label>
+                    <textarea name="sampleinput" id="sampleinput" class="form-control mb-3 test-data" rows="5" required></textarea>
+
+                    <label for="testcases">Test Cases:</label>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="testcases">
+                            <thead>
+                                <tr>
+                                    <th class="text-center tcn">Test Case Number</th>
+                                    <th class="text-center tcd">Test Case Data</th>
+                                    <th class="text-center">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-md btn-primary" id="addBtn" type="button">
+                        Test case <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+
+                    <div style="height: 20px;"></div>
+
+                    <label for="code">Solution:</label>
+                    <div class="code-editor">
+                        <textarea name="code" id="code" placeholder="Enter your code here" required></textarea>
+                    </div>
+
+                    <div style="height: 20px;"></div>
+
+                    <label for="marks">Marks:</label>
+                    <input type="text" name="marks" id="marks" class="form-control mb-3" required>
+
+                    <div style="height: 20px;"></div>
+
+                    <div class="form-group m-0 create-button w-25">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Create
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <button class="btn btn-md btn-primary" id="addBtn" type="button">
-            Test case <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
     </div>
-    <h5 class="heading">Solution</h5>
-    <div class="code-editor">
-        <textarea id="code" placeholder="Enter your code here"></textarea>
-    </div>
-    <h5 class="heading">Marks</h5>
-    <input type="text" name="marks" value="">
-    <div class="create-button">
-        <button class="btn btn-primary" type="button">
-            Create
-        </button>
-    <div>
     <div class="space">
 
     </div>

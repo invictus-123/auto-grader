@@ -1,0 +1,67 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+    <div class="space">
+    </div>
+    <div class="h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="w-75">
+                <h4 class="card-title">Create Test</h4>
+                <form method="POST" class="my-login-validation">
+                    {% csrf_token %}
+
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" class="form-control mb-3" required>
+
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" name="semester" id="semester">
+                        <option value="1">I</option>
+                        <option value="2">II</option>
+                        <option value="3">III</option>
+                        <option value="4">IV</option>
+                        <option value="5">V</option>
+                        <option value="6">VI</option>
+                        <option value="7">VII</option>
+                        <option value="8">VIII</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="branch">Branch:</label>
+                    <select class="form-control" name="branch" id="branch">
+                        <option value="cse">Computer Science and Engineering</option>
+                        <option value="ece">Electronics and Communication Engineering</option>
+                        <option value="me">Mechanical Engineering</option>
+                        <option value="ce">Civil Engienering</option>
+                        <option value="ee">Electrical Engineering</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="type">Type:</label>
+                    <select class="form-control" name="type" id="type">
+                        <option value="coding">Coding</option>
+                        <option value="mcq">MCQ</option>
+                        <option value="subjective">Subjective</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="duration">Duration:</label>
+                    <input type="text" name="duration" id="duration" class="form-control mb-3" required>
+
+                    <label for="starttime">Start Time:</label>
+                    <input type="datetime-local" name="starttime" id="starttime" class="form-control mb-3" required>
+
+                    <div style="height: 20px;"></div>
+
+                    <div class="form-group m-0 create-button w-25">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="space">
+
+    </div>
+{% endblock content %}
