@@ -41,18 +41,17 @@ class Problem(models.Model):
     data = JSONField()
 
     def __str__(self):
-        return str(self.problem_id)
+        return self.title
 
 class Submission(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    test = models.ForeignKey(Test, on_delete = models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete = models.CASCADE)
     solution = models.TextField(default = "")
     score = models.IntegerField(default = 0)
     after_completion = models.BooleanField(default = False)
 
     def __str__(self):
-        return str(user) + " " + str(problem)
+        return str(self.user) + " " + str(self.problem)
 
 class TestSubmission(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)

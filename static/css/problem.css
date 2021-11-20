@@ -4,6 +4,10 @@
     padding: 0px;
 }
 
+.code-editor form {
+    height: 100%;
+}
+
 .submit-code, .run-code {
     margin-top: 0.5em;
     margin-left: 0.5em;

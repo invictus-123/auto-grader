@@ -52,15 +52,18 @@
 
             <!-- Code Editor -->
             <div class="col-lg-6 code-editor">
-                <textarea id="code" placeholder="Enter your code here"></textarea>
-                <p>
-                    <button type="button" id="run-code" class="run-code btn btn-primary">Run Sample</button>
-                    <button type="button" id="submit-code" class="submit-code btn btn-primary">Submit</button>
-                </p>
-                <div style="height: 10px;"></div>
-                <div id="sample-run" style="display:none;">
-                    Verdict
-                </div>
+                <form method="POST" class="my-login-validation">
+                    {% csrf_token %}
+                    <textarea name="code" id="code" placeholder="Enter your code here"></textarea>
+                    <p>
+                        <button type="submit" id="run-code" class="run-code btn btn-primary">Run Sample</button>
+                        <button type="submit" id="submit-code" class="submit-code btn btn-primary">Submit</button>
+                    </p>
+                    <div style="height: 10px;"></div>
+                    <div id="sample-run" style="display:none;">
+                        Verdict
+                    </div>
+                </form>
             </div>
         </div>
     </div>

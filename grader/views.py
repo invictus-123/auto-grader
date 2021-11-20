@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from grader.forms import UserForm, UserRoleForm, StudentDetailsForm
+from grader.judge import execute
 from django.contrib.auth.models import User
-from grader.models import UserRole, StudentDetail, Test, Problem
+from grader.models import UserRole, StudentDetail, Test, Problem, Submission
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -127,12 +128,41 @@ def problem_view(request, problem_link):
 
 	try:
 		problem = Problem.objects.get(link = problem_link)
+		sample_output = execute(problem.data['solution'], 'cpp', problem.data['sample_input'])
 		context = {
 			'title': 'Problem - ' + problem.title,
 			'problem': problem,
 			'test_link': problem.test.link,
-			'sample_output': '9'
+			'sample_output': sample_output
 		}
+
+		if request.method == 'POST':
+			user_code = request.POST.get('code')
+			author_code = problem.data['solution']
+			cnt = 0
+			for test in problem.data['tests']:
+				user_output = execute(user_code, 'cpp', test)
+				author_output = execute(author_code, 'cpp', test)
+				if author_output == user_output:
+					cnt += 1
+				else:
+					break
+			score = problem.data['marks'] if cnt == len(problem.data['tests']) else 0
+
+			print(request.user,problem)
+
+			submission = Submission(
+				user = request.user,
+				problem = problem,
+				solution = user_code,
+				score = score
+			)
+			print('here')
+			submission.save()
+
+			return HttpResponse('submitted')
+			# return render(request, 'grader/submission.html')
+
 	except:
 		return HttpResponse('Problem not found')
 	return render(request, 'grader/problem.html', context=context)
@@ -194,8 +224,8 @@ def create_problem(request, test_link):
 
 		title = request.POST.get('title')
 		statement = request.POST.get('statement')
-		type = request.POST.get('type')
-		test_cases = request.POST.get('test-case')
+		problem_type = request.POST.get('type')
+		test_cases = request.POST.getlist('test-case')
 		sample_input = request.POST.get('sample-input')
 		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
 		solution = request.POST.get('code')
@@ -204,7 +234,7 @@ def create_problem(request, test_link):
 		prob = Problem(
 			test = test,
 			title = title,
-			type = type,
+			type = problem_type,
 			link = link,
 			data = {
 				'statement': statement,
@@ -214,7 +244,6 @@ def create_problem(request, test_link):
 				'marks': marks
 			}
 		)
-
 		prob.save()
 
 		return HttpResponseRedirect(reverse('test', args = (test_link,)))
