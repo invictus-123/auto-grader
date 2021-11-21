@@ -152,21 +152,33 @@ def problem_view(request, problem_link):
 			submission = Submission(
 				user = request.user,
 				problem = problem,
+				submission_time = timezone.now(),
 				solution = user_code,
 				score = score
 			)
 			submission.save()
 
-			return HttpResponse('submitted')
-			# return render(request, 'grader/submission.html')
+			return HttpResponseRedirect(reverse('submission', args = (problem_link,)))
 
 	except Exception as e:
-		return HttpResponse(e)
+		return HttpResponse('Problem not found')
 	return render(request, 'grader/problem.html', context=context)
 
 @login_required
 def submission(request, problem_link):
-	return HttpResponse('Submission')
+	try:
+		problem = Problem.objects.get(link = problem_link)
+
+		submissions = Submission.objects.all().filter(user = request.user, problem = problem).order_by('-submission_time')
+		context = {
+			'title': 'Submissions - ' + problem.title,
+			'problem_link': problem_link,
+			'submissions': submissions
+		}
+
+	except Exception as e:
+		return HttpResponse('Problem not found')
+	return render(request, 'grader/submission.html', context=context)
 
 @login_required
 def create_test(request):

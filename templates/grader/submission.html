@@ -1,0 +1,65 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+
+    <div class="space"></div>
+    <a class="btn btn-primary" href="{% url 'problem' problem_link %}">Back</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="space"></div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
+                    <div>
+                        <div class="table-responsive">
+                            <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Submission Id </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> User </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Submission Time </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Problem </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Score </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for submission in submissions %}
+                                        <tr>
+                                            <td>
+                                                <span class="mb-0 text-muted">{{ submission.id }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="mb-0 text-muted">{{ submission.user }}</span>
+                                            </td>
+                                            <td class="mb-0 text-muted">
+                                                {{ submission.submission_time }}
+                                            </td>
+                                            <td>
+                                                <a class="link" href="{% url 'problem' submission.problem.link %}">
+                                                    <span class="text-dark">{{ submission.problem|title }}</span>
+                                                </a>
+                                            </td>
+                                            <td class="text-muted">
+                                                {{ submission.score }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
