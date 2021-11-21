@@ -53,10 +53,3 @@ class Submission(models.Model):
 
     def __str__(self):
         return str(self.user) + " " + str(self.problem)
-
-class TestSubmission(models.Model):
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
-    test = models.ForeignKey(Test, on_delete = models.CASCADE)
-
-    def __str__(self):
-        return str(user) + " " + str(test)
