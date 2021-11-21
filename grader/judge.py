@@ -40,7 +40,7 @@ class Program:
         self.timeLimit = timelimit
 
     def isvalidfile(self):
-        validfile = re.compile("^(\S+)\.(java|cpp|c)$")
+        validfile = re.compile("^(\S+)\.(java|cpp|c|py)$")
         matches = validfile.match(self.fileName)
         if matches:
             self.name, self.language = matches.groups()
@@ -61,6 +61,8 @@ class Program:
             cmd = 'gcc -o {0} {1}'.format(self.name, self.fileName)
         elif self.language == 'cpp':
             cmd = 'g++ -o {0} {1}'.format(self.name, self.fileName)
+        elif self.language == 'py':
+            cmd = 'python -m py_compile {}'.format(self.fileName)
 
         if cmd is None:
             return 403, 'File is of invalid type'
@@ -92,6 +94,8 @@ class Program:
             cmd = 'java {}'.format(self.name)
         elif self.language in ['c', 'cpp']:
             cmd = './{}'.format(self.name)
+        elif self.language == 'py':
+            cmd = 'python {}'.format(self.fileName)
 
         if cmd is None:
             return 403, 'File is of invalid type'
@@ -138,57 +142,53 @@ def codechecker(filename, inputfile=None, actualoutput=None, timeout=1, check=Tr
         compileResult, compileErrors = newprogram.compile()
         if compileErrors is not None:
             sys.stdout.flush()
-            write_data(self.actualOutputFile, 'Compilation Error')
+            write_data(actualoutput, 'Compilation Error')
             return
 
         runtimeResult, runtimeErrors = newprogram.run()
         if runtimeErrors is not None:
             sys.stdout.flush()
-            write_data(self.actualOutputFile, 'Runtime Error')
+            write_data(actualoutput, 'Runtime Error')
             return
 
     else:
-        write_data(self.actualOutputFile, 'Invalid File')
+        write_data(actualoutput, 'Invalid File')
         return
 
 def execute(code, language, input_text):
+    file_name = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+    alias_name = file_name
+    input_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
+    if language == 'java':
+        file_name += '.java'
+    elif language == 'c':
+        file_name += '.c'
+    elif language == 'cpp':
+        file_name += '.cpp'
+    elif language == 'py':
+        file_name += '.py'
+    output_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
+
+    write_data(file_name, code)
+    write_data(input_name, input_text)
+    write_data(output_name, '')
+
+    codechecker(
+        filename=file_name,
+        inputfile=input_name,
+        actualoutput=output_name,
+        timeout=10,
+        check=False
+    )
+
+    output_text = get_data(output_name)
+
     try:
-        file_name = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
-        alias_name = file_name
-        input_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
-        if language == 'java':
-            file_name += '.java'
-        elif language == 'c':
-            file_name += '.c'
-        elif language == 'cpp':
-            file_name += '.cpp'
-        output_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
-
-        write_data(file_name, code)
-        write_data(input_name, input_text)
-        write_data(output_name, '')
-
-        codechecker(
-            filename=file_name,
-            inputfile=input_name,
-            actualoutput=output_name,
-            timeout=10,
-            check=False
-        )
-
-        output_text = get_data(output_name)
-        print(output_text)
-
-        if language == 'c' or language == 'cpp':
-            os.remove(alias_name)
         os.remove(file_name)
         os.remove(input_name)
         os.remove(output_name)
+        os.remove(alias_name)
+    except Exception as e:
+        pass
 
-        return output_text
-    except:
-        if language == 'c' or language == 'cpp':
-            os.remove(alias_name)
-        os.remove(file_name)
-        os.remove(input_name)
-        os.remove(output_name)
+    return output_text
