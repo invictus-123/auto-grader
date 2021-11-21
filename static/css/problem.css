@@ -26,11 +26,6 @@
     border-radius: 2%;
 }
 
-#sample-run {
-    padding-left: 1em;
-    padding-bottom: 5em;
-}
-
 .card {
     position: relative;
     display: flex;

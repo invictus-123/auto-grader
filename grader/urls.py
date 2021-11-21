@@ -9,6 +9,7 @@ urlpatterns = [
 	path('signup', views.signup, name='signup'),
 	path('signout', views.signout, name='signout'),
 	url(r'^test/(?P<test_link>\w+)$', views.test_view, name='test'),
+	url(r'^test/(?P<test_link>\w+)/result$', views.result, name='result'),
 	url(r'^problem/(?P<problem_link>\w+)$', views.problem_view, name='problem'),
 	url(r'^problem/(?P<problem_link>\w+)/submission$', views.submission, name='submission'),
 	path('create-test', views.create_test, name='create-test'),

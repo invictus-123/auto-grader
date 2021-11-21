@@ -18,6 +18,16 @@ STATUS_CODES = {
     408: 'TIME LIMIT EXCEEDED'
 }
 
+def write_data(file_name, data):
+    f = open(file_name, 'w')
+    f.write(data)
+    f.close()
+
+def get_data(file_name):
+    f = open(file_name, 'r')
+    data = f.read()
+    f.close()
+    return data
 
 class Program:
 
@@ -128,60 +138,57 @@ def codechecker(filename, inputfile=None, actualoutput=None, timeout=1, check=Tr
         compileResult, compileErrors = newprogram.compile()
         if compileErrors is not None:
             sys.stdout.flush()
-            print(compileErrors, file=sys.stderr)
-            exit(0)
+            write_data(self.actualOutputFile, 'Compilation Error')
+            return
 
         runtimeResult, runtimeErrors = newprogram.run()
         if runtimeErrors is not None:
             sys.stdout.flush()
-            print(runtimeErrors, file=sys.stderr)
-            exit(0)
+            write_data(self.actualOutputFile, 'Runtime Error')
+            return
 
     else:
-        print('FATAL: Invalid file', file=sys.stderr)
-
-
-def write_data(file_name, data):
-    f = open(file_name, 'w')
-    f.write(data)
-    f.close()
-
-def get_data(file_name):
-    f = open(file_name, 'r')
-    data = f.read()
-    f.close()
-    return data
+        write_data(self.actualOutputFile, 'Invalid File')
+        return
 
 def execute(code, language, input_text):
-    file_name = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
-    alias_name = file_name
-    input_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
-    if language == 'java':
-        file_name += '.java'
-    elif language == 'c':
-        file_name += '.c'
-    elif language == 'cpp':
-        file_name += '.cpp'
-    output_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
+    try:
+        file_name = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+        alias_name = file_name
+        input_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
+        if language == 'java':
+            file_name += '.java'
+        elif language == 'c':
+            file_name += '.c'
+        elif language == 'cpp':
+            file_name += '.cpp'
+        output_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
 
-    write_data(file_name, code)
-    write_data(input_name, input_text)
-    write_data(output_name, '')
+        write_data(file_name, code)
+        write_data(input_name, input_text)
+        write_data(output_name, '')
 
-    codechecker(
-        filename=file_name,
-        inputfile=input_name,
-        actualoutput=output_name,
-        timeout=10,
-        check=False
-    )
+        codechecker(
+            filename=file_name,
+            inputfile=input_name,
+            actualoutput=output_name,
+            timeout=10,
+            check=False
+        )
 
-    output_text = get_data(output_name)
+        output_text = get_data(output_name)
+        print(output_text)
 
-    if language == 'c' or language == 'cpp':
-        os.remove(alias_name)
-    os.remove(file_name)
-    os.remove(input_name)
-    os.remove(output_name)
+        if language == 'c' or language == 'cpp':
+            os.remove(alias_name)
+        os.remove(file_name)
+        os.remove(input_name)
+        os.remove(output_name)
 
-    return output_text
+        return output_text
+    except:
+        if language == 'c' or language == 'cpp':
+            os.remove(alias_name)
+        os.remove(file_name)
+        os.remove(input_name)
+        os.remove(output_name)

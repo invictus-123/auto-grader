@@ -27,7 +27,7 @@ class Test(models.Model):
     branch = models.CharField(max_length = 255)
     duration = models.IntegerField()
     start_time = models.DateTimeField()
-    has_expired = models.BooleanField(default = False)
+    end_time = models.DateTimeField()
 
     def __str__(self):
         return self.title

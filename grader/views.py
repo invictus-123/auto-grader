@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.db.models import F
 import hashlib, random, datetime, pytz
 
 def index(request):
@@ -19,14 +20,17 @@ def index(request):
 		role = UserRole.objects.get(user = request.user).role
 		context['role'] = role
 
+		cur_time = timezone.localtime(timezone.now())
 		if role == 'teacher':
-			tests = request.user.test_set.all().filter(has_expired = False).order_by('start_time')
-			context['is_teacher'] = True
-			context['tests'] = tests
+			tests = Test.objects.all().filter(user = request.user)
 		else:
 			details = StudentDetail.objects.get(user = request.user)
-			tests = Test.objects.all().filter(has_expired = False, branch = details.branch, semester = details.semester).order_by('start_time')
-			context['tests'] = tests
+			tests = Test.objects.all().filter(branch = details.branch)
+			tests = tests.filter(semester = details.semester)
+			tests = tests.filter(end_time__gte = cur_time)
+		context['is_teacher'] = True if role == 'teacher' else False
+		tests = tests.order_by('start_time')
+		context['tests'] = tests
 
 	return render(request, 'grader/index.html', context=context)
 
@@ -113,10 +117,13 @@ def test_view(request, test_link):
 		username = request.user.username
 		role = UserRole.objects.get(user = request.user).role
 		is_teacher = True if role == 'teacher' else False
+		cur_time = timezone.localtime(timezone.now())
+		has_ended = True if test.end_time < cur_time else False
 		context = {
 			'title': 'Test - ' + test.title,
 			'is_teacher': is_teacher,
 			'test_link': test_link,
+			'has_ended': has_ended,
 			'problems': problems
 		}
 		return render(request, 'grader/test.html', context=context)
@@ -169,7 +176,9 @@ def submission(request, problem_link):
 	try:
 		problem = Problem.objects.get(link = problem_link)
 
-		submissions = Submission.objects.all().filter(user = request.user, problem = problem).order_by('-submission_time')
+		submissions = Submission.objects.all().filter(user = request.user)
+		submissions = submissions.filter(problem = problem)
+		submissions = submissions.order_by('-submission_time')
 		context = {
 			'title': 'Submissions - ' + problem.title,
 			'problem_link': problem_link,
@@ -192,14 +201,8 @@ def create_test(request):
 		semester = request.POST.get('semester')
 		branch = request.POST.get('branch')
 		duration = int(request.POST.get('duration'))
-		start_time = pytz.utc.localize(datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M'))
+		start_time = pytz.timezone('Asia/Kolkata').localize(datetime.datetime.strptime(request.POST.get('starttime'), '%Y-%m-%dT%H:%M'))
 		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
-
-		if timezone.now() < start_time:
-			has_expired = False
-		else:
-			delta = timezone.now() - start_time
-			has_expired = True if delta.total_seconds() / 60 >= duration else False
 
 		test = Test(
 			user = request.user,
@@ -209,7 +212,7 @@ def create_test(request):
 			branch = branch,
 			duration = duration,
 			start_time = start_time,
-			has_expired = has_expired
+			end_time = start_time + datetime.timedelta(minutes = duration)
 		)
 
 		test.save()
@@ -262,3 +265,46 @@ def create_problem(request, test_link):
 		'test_link': test_link,
 	}
 	return render(request, 'grader/create_problem.html', context=context)
+
+@login_required
+def result(request, test_link):
+
+	try:
+		role = UserRole.objects.get(user = request.user).role
+		if role == 'student':
+			return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+		test = Test.objects.get(link = test_link)
+		cur_time = timezone.localtime(timezone.now())
+		if test.end_time >= cur_time:
+			return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+		students = StudentDetail.objects.all().filter(semester = test.semester)
+		students = students.filter(branch = test.branch)
+		problems = Problem.objects.all().filter(test = test)
+
+		result = []
+		for student in students:
+			username = student.user.username
+			cur = dict()
+			cur['username'] = username
+			cur['score'] = 0
+			for problem in problems:
+				sub = Submission.objects.all().filter(user = student.user)
+				sub = sub.filter(problem = problem)
+				sub = sub.order_by('-score')
+				if len(sub) > 0:
+					cur['score'] += sub.first().score
+			result.append(cur)
+
+		total = sum([problem.data['marks'] for problem in problems])
+
+		context = {
+			'title': test.title + ' - Result',
+			'total': total,
+			'test_link': test_link,
+			'result': result
+		}
+		return render(request, 'grader/result.html', context=context)
+	except:
+		return HttpResponse('Error while loading the test')

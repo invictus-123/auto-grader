@@ -1,0 +1,50 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+
+    <div class="space"></div>
+    <a class="btn btn-primary" href="{% url 'test' test_link %}">Back</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="space"></div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
+                    <div>
+                        <div class="table-responsive">
+                            <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Student </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Score </span>
+                                        </th>
+                                        <th>
+                                            <span class="mb-0 text-muted"> Total Score </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in result %}
+                                        <tr>
+                                            <td>
+                                                <span class="mb-0 text-muted">{{ entry.username }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="mb-0 text-muted">{{ entry.score }}</span>
+                                            </td>
+                                            <td class="mb-0 text-muted">
+                                                {{ total }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
