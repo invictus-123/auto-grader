@@ -128,7 +128,7 @@ def problem_view(request, problem_link):
 
 	try:
 		problem = Problem.objects.get(link = problem_link)
-		sample_output = execute(problem.data['solution'], 'cpp', problem.data['sample_input'])
+		sample_output = execute(problem.data['solution'], 'c', problem.data['sample_input'])
 		context = {
 			'title': 'Problem - ' + problem.title,
 			'problem': problem,
@@ -141,8 +141,8 @@ def problem_view(request, problem_link):
 			author_code = problem.data['solution']
 			cnt = 0
 			for test in problem.data['tests']:
-				user_output = execute(user_code, 'cpp', test)
-				author_output = execute(author_code, 'cpp', test)
+				user_output = execute(user_code, 'c', test)
+				author_output = execute(author_code, 'c', test)
 				if author_output == user_output:
 					cnt += 1
 				else:
