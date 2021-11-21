@@ -149,22 +149,19 @@ def problem_view(request, problem_link):
 					break
 			score = problem.data['marks'] if cnt == len(problem.data['tests']) else 0
 
-			print(request.user,problem)
-
 			submission = Submission(
 				user = request.user,
 				problem = problem,
 				solution = user_code,
 				score = score
 			)
-			print('here')
 			submission.save()
 
 			return HttpResponse('submitted')
 			# return render(request, 'grader/submission.html')
 
-	except:
-		return HttpResponse('Problem not found')
+	except Exception as e:
+		return HttpResponse(e)
 	return render(request, 'grader/problem.html', context=context)
 
 @login_required
