@@ -115,8 +115,8 @@ def test_view(request, test_link):
 		test = Test.objects.get(link = test_link)
 		role = UserRole.objects.get(user = request.user).role
 		cur_time = timezone.localtime(timezone.now())
-		if test.end_time >= cur_time and role == 'student':
-			return HttpResponseRedirect(reverse('test', args = (test_link,)))
+		if (test.start_time >= cur_time or test.end_time <= cur_time) and role == 'student':
+			return HttpResponseRedirect(reverse('index'))
 		problems = Problem.objects.all().filter(test = test)
 		username = request.user.username
 		is_teacher = True if role == 'teacher' else False
@@ -151,7 +151,7 @@ def problem_view(request, problem_link):
 		if request.method == 'POST':
 			role = UserRole.objects.get(user = request.user).role
 			cur_time = timezone.localtime(timezone.now())
-			if problem.test.end_time >= cur_time and role == 'student':
+			if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
 				return HttpResponseRedirect(reverse('index'))
 			user_code = request.POST.get('code')
 			author_code = problem.data['solution']
@@ -186,7 +186,7 @@ def submission(request, problem_link):
 		problem = Problem.objects.get(link = problem_link)
 		role = UserRole.objects.get(user = request.user).role
 		cur_time = timezone.localtime(timezone.now())
-		if problem.test.end_time >= cur_time and role == 'student':
+		if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
 			return HttpResponseRedirect(reverse('index'))
 		submissions = Submission.objects.all().filter(user = request.user)
 		submissions = submissions.filter(problem = problem)
