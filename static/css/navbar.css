@@ -1,5 +1,5 @@
 .nav-header {
-    height: 10%;
+    height: 75px;
     width: 100%;
     float: left;
     background: #2e2e2e;
@@ -54,7 +54,7 @@
 
 .show-menu-btn {
     margin: 0px;
-    margin-top: 10px;
+    margin-top: 15px;
     float: right;
 }
 
@@ -79,6 +79,7 @@
 .hide-menu-btn {
     display: block;
 }
+
 .navigation {
     position: fixed;
     width: 100%;
@@ -90,22 +91,27 @@
     transition: 1s;
     z-index: 1;
 }
+
 .navigation li {
     width: 100%;
 }
+
 .navigation li a {
     padding: 15px 15px;
     text-align: left;
 }
+
 .navigation li a i {
     width: auto;
     font-size: 20px;
 }
+
 .hide-menu-btn {
     position: absolute;
     top: 15px;
     right: 20px;
 }
+
 #toggle-btn:checked ~ nav .navigation {
     top: 0px;
 }
