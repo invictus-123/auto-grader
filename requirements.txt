@@ -11,7 +11,7 @@ iniconfig==1.1.1
 jsonfield==3.1.0
 packaging==21.2
 pluggy==1.0.0
-psycopg2-binary==2.9.2
+psycopg2-binary==2.8.6
 py==1.11.0
 pycparser==2.21
 pyparsing==2.4.7
