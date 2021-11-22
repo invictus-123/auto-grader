@@ -1,11 +1,13 @@
+body {
+	font-family: "Audiowide", sans-serif;
+}
 
 html, body {
 	height: 100%;
 }
 
 body.my-login-page {
-	background-color: #f7f9fb;
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .my-login-page .card-wrapper {
@@ -15,7 +17,7 @@ body.my-login-page {
 .my-login-page .card {
 	border-color: transparent;
     margin-top: 25%;
-    margin-bottom: 25%;
+	margin-bottom: 25%;
 	box-shadow: 0 4px 8px rgba(0,0,0,.05);
 }
 
@@ -43,10 +45,6 @@ body.my-login-page {
 	margin: 40px 0;
 	color: #888;
 	text-align: center;
-}
-
-#space {
-	margin-left: 4em;
 }
 
 @media screen and (max-width: 425px) {

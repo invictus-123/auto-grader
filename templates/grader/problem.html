@@ -4,7 +4,7 @@
 
     <div class="space">
     </div>
-    <a class="btn btn-primary" href="{% url 'test' test_link %}">Back</a>
+    <a class="btn btn-primary" href="{% url 'test' test_link %}"><i class="fas fa-arrow-left"></i> Back</a>
     <a class="btn btn-primary" href="{% url 'submission' problem.link %}">Submissions</a>
 
     <div class="mt-5">
@@ -15,7 +15,6 @@
                 <article>
                     <header class="mb-4">
                         <h3 class="fw-b mb-2">{{ problem.title|title }}</h3>
-                        <!-- <div class="text-muted fst-italic mb-2">{{ test.start_time|date:"M d, Y, H:i" }}</div> -->
                         <div class="text-muted fst-italic mb-2">
                             {% if problem.type == 'coding'%}
                                 Coding

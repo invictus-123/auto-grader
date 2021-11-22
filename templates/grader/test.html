@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="space"></div>
-    <a class="btn btn-primary" href="{% url 'index' %}">Back</a>
+    <a class="btn btn-primary" href="{% url 'index' %}"><i class="fas fa-arrow-left"></i> Back</a>
     {% if is_teacher and not_started %}
         <a class="btn btn-primary" href="{% url 'create-problem' test_link %}">Create Problem</a>
     {% endif %}
@@ -13,20 +13,16 @@
             <div class="card-body">
                 <h5 class="card-title">{{ problem.title|title }}</h5>
                 <p class="card-text">
-                    {% if problem.type == 'coding'%}
-                        Coding
-                    {% elif problem.type == 'mcq' %}
-                        MCQ
-                    {% else %}
-                        Subjective
-                    {% endif %}
+                    Type: {{ problem.type|title }}
+                    <br>
+                    Marks: {{ problem.data.marks }}
                 </p>
-                <a class="btn btn-primary" href="{% url 'problem' problem.link %}">Open</a>
+                <a href="{% url 'problem' problem.link %}" class="btn btn-primary">Open</a>
             </div>
         </div>
     {% endfor %}
     <div style="height:30px;"></div>
     {% if is_teacher and has_ended %}
-        <a class="btn btn-primary" href="{% url 'result' test_link %}">Generate Result</a>
+        <a class="btn btn-primary" href="{% url 'result' test_link %}">Result</a>
     {% endif %}
 {% endblock content %}

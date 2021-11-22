@@ -12,23 +12,21 @@
             {% for test in tests %}
                 <div class="test-card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ test.title|title}}</h5>
+                        <h5 class="card-title">{{ test.title|title }}</h5>
                         <p class="card-text">
-                            Start Time: {{ test.start_time }}
-                        </p>
-                        <p class="card-text">
+                            Duration: {{ test.start_time }}
+                            <br>
                             Duration: {{ test.duration }} minutes
-                        </p>
-                        <p class="card-text">
+                            <br>
                             Teacher: {{ test.user.username }}
                         </p>
-                        <a class="btn btn-primary" href="{% url 'test' test.link %}">Open</a>
+                        <a href="{% url 'test' test.link %}" class="btn btn-primary">Open</a>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
         	<h1>Home</h1>
         {% endif %}
-        <div class="space">            
+        <div class="space">
         </div>
 {% endblock content %}
