@@ -111,29 +111,29 @@ def signout(request):
 @login_required
 def test_view(request, test_link):
 
-	# try:
-	test = Test.objects.get(link = test_link)
-	role = UserRole.objects.get(user = request.user).role
-	cur_time = timezone.localtime(timezone.now())
-	if (test.start_time >= cur_time or test.end_time <= cur_time) and role == 'student':
-		return HttpResponseRedirect(reverse('index'))
-	problems = Problem.objects.all().filter(test = test)
-	username = request.user.username
-	is_teacher = True if role == 'teacher' else False
-	cur_time = timezone.localtime(timezone.now())
-	not_started = True if test.start_time > cur_time else False
-	has_ended = True if test.end_time <= cur_time else False
-	context = {
-		'title': 'Test - ' + test.title,
-		'is_teacher': is_teacher,
-		'test_link': test_link,
-		'has_ended': has_ended,
-		'not_started': not_started,
-		'problems': problems
-	}
-	return render(request, 'grader/test.html', context=context)
-	# except Exception as e:
-	# 	return HttpResponse('Test not found')
+	try:
+		test = Test.objects.get(link = test_link)
+		role = UserRole.objects.get(user = request.user).role
+		cur_time = timezone.localtime(timezone.now())
+		if (test.start_time >= cur_time or test.end_time <= cur_time) and role == 'student':
+			return HttpResponseRedirect(reverse('index'))
+		problems = Problem.objects.all().filter(test = test)
+		username = request.user.username
+		is_teacher = True if role == 'teacher' else False
+		cur_time = timezone.localtime(timezone.now())
+		not_started = True if test.start_time > cur_time else False
+		has_ended = True if test.end_time <= cur_time else False
+		context = {
+			'title': 'Test - ' + test.title,
+			'is_teacher': is_teacher,
+			'test_link': test_link,
+			'has_ended': has_ended,
+			'not_started': not_started,
+			'problems': problems
+		}
+		return render(request, 'grader/test.html', context=context)
+	except Exception as e:
+		return HttpResponse('Test not found')
 
 @login_required
 def problem_view(request, problem_link):
