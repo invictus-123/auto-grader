@@ -113,9 +113,12 @@ def test_view(request, test_link):
 
 	try:
 		test = Test.objects.get(link = test_link)
+		role = UserRole.objects.get(user = request.user).role
+		cur_time = timezone.localtime(timezone.now())
+		if test.end_time >= cur_time and role == 'student':
+			return HttpResponseRedirect(reverse('test', args = (test_link,)))
 		problems = Problem.objects.all().filter(test = test)
 		username = request.user.username
-		role = UserRole.objects.get(user = request.user).role
 		is_teacher = True if role == 'teacher' else False
 		cur_time = timezone.localtime(timezone.now())
 		has_ended = True if test.end_time < cur_time else False
@@ -144,6 +147,10 @@ def problem_view(request, problem_link):
 		}
 
 		if request.method == 'POST':
+			role = UserRole.objects.get(user = request.user).role
+			cur_time = timezone.localtime(timezone.now())
+			if problem.test.end_time >= cur_time and role == 'student':
+				return HttpResponseRedirect(reverse('index'))
 			user_code = request.POST.get('code')
 			author_code = problem.data['solution']
 			cnt = 0
@@ -175,7 +182,9 @@ def problem_view(request, problem_link):
 def submission(request, problem_link):
 	try:
 		problem = Problem.objects.get(link = problem_link)
-
+		role = UserRole.objects.get(user = request.user).role
+		if problem.test.end_time >= cur_time and role == 'student':
+			return HttpResponseRedirect(reverse('index'))
 		submissions = Submission.objects.all().filter(user = request.user)
 		submissions = submissions.filter(problem = problem)
 		submissions = submissions.order_by('-submission_time')

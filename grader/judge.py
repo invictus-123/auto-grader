@@ -19,11 +19,17 @@ STATUS_CODES = {
 }
 
 def write_data(file_name, data):
+    """
+    Write the data into the file
+    """
     f = open(file_name, 'w')
     f.write(data)
     f.close()
 
 def get_data(file_name):
+    """
+    Get the data from the file
+    """
     f = open(file_name, 'r')
     data = f.read()
     f.close()
@@ -40,6 +46,10 @@ class Program:
         self.timeLimit = timelimit
 
     def isvalidfile(self):
+        """
+        Check if the extension of the file is one
+        of the supported extensions
+        """
         validfile = re.compile("^(\S+)\.(java|cpp|c|py)$")
         matches = validfile.match(self.fileName)
         if matches:
@@ -48,6 +58,9 @@ class Program:
         return False
 
     def compile(self):
+        """
+        Check the code for compilation errors
+        """
         if os.path.isfile(self.name):
             os.remove(self.name)
 
@@ -84,7 +97,9 @@ class Program:
             print(e.output)
 
     def run(self):
-        """ Runs the executable, returns status code and errors """
+        """
+        Run the code and find the output
+        """
 
         if not os.path.isfile(self.fileName) :
             return 404, 'Missing executable file'
@@ -132,6 +147,10 @@ class Program:
 
 
 def codechecker(filename, inputfile=None, actualoutput=None, timeout=1, check=True):
+    """
+    Create an instance of the Program class
+    and compile and run the code
+    """
     newprogram = Program(
         filename=filename,
         inputfile=inputfile,
@@ -156,6 +175,11 @@ def codechecker(filename, inputfile=None, actualoutput=None, timeout=1, check=Tr
         return
 
 def execute(code, language, input_text):
+    """
+    Create files for code, input and output
+    Run the code to find the output
+    Delete the created files
+    """
     file_name = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
     alias_name = file_name
     input_name = '{}.txt'.format(hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest())
