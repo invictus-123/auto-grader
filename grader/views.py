@@ -121,12 +121,14 @@ def test_view(request, test_link):
 		username = request.user.username
 		is_teacher = True if role == 'teacher' else False
 		cur_time = timezone.localtime(timezone.now())
-		has_ended = True if test.end_time < cur_time else False
+		not_started = True if test.start_time > cur_time else False
+		has_ended = True if test.end_time <= cur_time else False
 		context = {
 			'title': 'Test - ' + test.title,
 			'is_teacher': is_teacher,
 			'test_link': test_link,
 			'has_ended': has_ended,
+			'not_started': not_started,
 			'problems': problems
 		}
 		return render(request, 'grader/test.html', context=context)
@@ -183,6 +185,7 @@ def submission(request, problem_link):
 	try:
 		problem = Problem.objects.get(link = problem_link)
 		role = UserRole.objects.get(user = request.user).role
+		cur_time = timezone.localtime(timezone.now())
 		if problem.test.end_time >= cur_time and role == 'student':
 			return HttpResponseRedirect(reverse('index'))
 		submissions = Submission.objects.all().filter(user = request.user)
@@ -195,6 +198,7 @@ def submission(request, problem_link):
 		}
 
 	except Exception as e:
+		print(e)
 		return HttpResponse('Problem not found')
 	return render(request, 'grader/submission.html', context=context)
 
@@ -240,9 +244,12 @@ def create_problem(request, test_link):
 	if role == 'student':
 		return HttpResponseRedirect(reverse('index'))
 
-	if request.method == 'POST':
-		test = Test.objects.get(link = test_link)
+	test = Test.objects.get(link = test_link)
+	cur_time = timezone.localtime(timezone.now())
+	if test.start_time <= cur_time:
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
 
+	if request.method == 'POST':
 		title = request.POST.get('title')
 		statement = request.POST.get('statement')
 		problem_type = request.POST.get('type')

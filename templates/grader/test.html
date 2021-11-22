@@ -4,7 +4,7 @@
 
     <div class="space"></div>
     <a class="btn btn-primary" href="{% url 'index' %}">Back</a>
-    {% if is_teacher %}
+    {% if is_teacher and not_started %}
         <a class="btn btn-primary" href="{% url 'create-problem' test_link %}">Create Problem</a>
     {% endif %}
 
