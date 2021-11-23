@@ -75,7 +75,7 @@
     z-index: -1111;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 480px) {
     .show-menu-btn,
     .hide-menu-btn {
         display: block;
@@ -84,7 +84,7 @@
     .navigation {
         position: fixed;
         width: 100%;
-        height: 100vh;
+        height: 100%;
         background: #2e2e2e;
         top: -100%;
         left: 0;
