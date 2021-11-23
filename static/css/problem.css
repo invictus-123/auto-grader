@@ -64,3 +64,11 @@
 .font-light {
     font-weight: 300;
 }
+
+.language-picker {
+    margin-bottom: 20px;
+}
+
+.language-picker select {
+    border-radius: 50px;
+}

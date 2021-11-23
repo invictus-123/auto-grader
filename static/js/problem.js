@@ -30,6 +30,36 @@ if(codeEditor) {
             );
             codeEditor.selectionEnd = codeEditor.selectionStart - 1;
         }
+        else if(e.key == '[') {
+            e.preventDefault();
+            codeEditor.setRangeText(
+                "[]",
+                codeEditor.selectionStart,
+                codeEditor.selectionStart,
+                "end"
+            );
+            codeEditor.selectionEnd = codeEditor.selectionStart - 1;
+        }
+        else if(e.key == '"') {
+            e.preventDefault();
+            codeEditor.setRangeText(
+                '""',
+                codeEditor.selectionStart,
+                codeEditor.selectionStart,
+                "end"
+            );
+            codeEditor.selectionEnd = codeEditor.selectionStart - 1;
+        }
+        else if(e.key == "'") {
+            e.preventDefault();
+            codeEditor.setRangeText(
+                "''",
+                codeEditor.selectionStart,
+                codeEditor.selectionStart,
+                "end"
+            );
+            codeEditor.selectionEnd = codeEditor.selectionStart - 1;
+        }
     });
 }
 $("#code").keydown(function(e){

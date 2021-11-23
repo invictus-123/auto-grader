@@ -1,57 +1,69 @@
 {% extends "grader/base.html" %}
-
+{% load static %}
 {% block content %}
 
-        {% if is_teacher %}
-            <a class="btn btn-primary" href="{% url 'create-test' %}"><i class="fas fa-plus"></i> Create Test</a>
-        {% else %}
-            <div class="space"></div>
-            <div class="space"></div>
-        {% endif %}
-        {% if request.user.is_authenticated %}
-            {% for test in tests %}
-                <div class="test-card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ test.title|title }}</h5>
-                        <p class="card-text">
-                            Duration: {{ test.start_time }}
-                            <br>
-                            Duration: {{ test.duration }} minutes
-                            <br>
-                            Teacher: {{ test.user.username }}
-                        </p>
-                        <a href="{% url 'test' test.link %}" class="btn btn-primary">Open</a>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-        	<h1>Home</h1>
-        {% endif %}
-
-        {% if tests.has_other_pages %}
-            <div class="pagination-wrapper">
-                <div class="pagination">
-                    {% if tests.has_previous %}
-                        <a class="prev page-numbers" href="?page={{ tests.previous_page_number }}">prev</a>
-                    {% else %}
-                        <a class="disabled prev page-numbers">prev</a>
-                    {% endif %}
-
-                    {% for i in tests.paginator.page_range %}
-                        {% if tests.number == i %}
-                            <span aria-current="page" class="page-numbers current">{{ i }}</span>
-                        {% else %}
-                            <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if tests.has_next %}
-                        <a class="next page-numbers" href="?page={{ tests.next_page_number }}">next</a>
-                    {% else %}
-                        <a class="disabled next page-numbers">next</a>
-                    {% endif %}
+    {% if is_teacher %}
+        <a class="btn btn-primary" href="{% url 'create-test' %}"><i class="fas fa-plus"></i> Create Test</a>
+    {% else %}
+        <div class="space"></div>
+        <div class="space"></div>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        {% for test in tests %}
+            <div class="test-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ test.title|title }}</h5>
+                    <p class="card-text">
+                        Duration: {{ test.start_time }}
+                        <br>
+                        Duration: {{ test.duration }} minutes
+                        <br>
+                        Teacher: {{ test.user.username }}
+                    </p>
+                    <a href="{% url 'test' test.link %}" class="btn btn-primary">Open</a>
                 </div>
             </div>
-        {% endif %}
-        <div class="space"></div>
+        {% endfor %}
+    {% else %}
+        <div class="jumbotron">
+            <img src={% static 'images/home.jpg' %} class="img-fluid">
+
+            <div class="space"></div>
+            <p class="about">
+                This is an auto-grader application developed by Ayushman Mathur that
+                enables teachers to conduct there coding and mcq based tests. It has support
+                for C language and Python3. It provides signin and signup feature for both
+                students and teachers, where teachers can create test and students can participate.
+                Once the test is over, it automatically generates the result based on the marks
+                allocated to each question.
+            </p>
+        </div>
+    {% endif %}
+
+    {% if tests.has_other_pages %}
+        <div class="pagination-wrapper">
+            <div class="pagination">
+                {% if tests.has_previous %}
+                    <a class="prev page-numbers" href="?page={{ tests.previous_page_number }}">prev</a>
+                {% else %}
+                    <a class="disabled prev page-numbers">prev</a>
+                {% endif %}
+
+                {% for i in tests.paginator.page_range %}
+                    {% if tests.number == i %}
+                        <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                    {% else %}
+                        <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if tests.has_next %}
+                    <a class="next page-numbers" href="?page={{ tests.next_page_number }}">next</a>
+                {% else %}
+                    <a class="disabled next page-numbers">next</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="space"></div>
 {% endblock content %}

@@ -18,7 +18,7 @@ body.my-login-page {
 	border-color: transparent;
     margin-top: 25%;
 	margin-bottom: 25%;
-	box-shadow: 0 4px 8px rgba(0,0,0,.05);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .my-login-page .card.fat {
@@ -51,10 +51,19 @@ body.my-login-page {
 	margin-bottom: 5px;
 }
 
-@media screen and (max-width: 425px) {
+img {
+	border-radius: 10px;
+}
+
+.about {
+	font-size: 1.5em;
+	line-height: 2em;
+}
+
+@media screen and (max-width: 480) {
 	.my-login-page .card-wrapper {
 		width: 90%;
-		margin: 0 auto;
+		margin: 0;
 	}
 }
 

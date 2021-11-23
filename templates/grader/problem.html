@@ -56,6 +56,12 @@
             <div class="col-lg-6 code-editor">
                 <form method="POST" class="my-login-validation">
                     {% csrf_token %}
+                    <div class="col-lg-4 language-picker">
+                        <select class="form-control" name="language">
+                            <option value="c" selected>C</option>
+                            <option value="py">Python3</option>
+                        </select>
+                    </div>
                     <textarea name="code" id="code" placeholder="Enter your code here" required></textarea>
                     <p>
                         <button type="submit" id="submit-code" class="submit-code btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>

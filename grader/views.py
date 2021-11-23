@@ -162,7 +162,7 @@ def problem_view(request, problem_link):
 	try:
 		role = UserRole.objects.get(user = request.user).role
 		problem = Problem.objects.get(link = problem_link)
-		sample_output = execute(problem.data['solution'], 'c', problem.data['sample_input'])
+		sample_output = execute(problem.data['solution'], problem.data['language'], problem.data['sample_input'])
 		is_teacher = True if role == 'teacher' else False
 		cur_time = timezone.localtime(timezone.now())
 		not_started = True if problem.test.start_time > cur_time else False
@@ -184,8 +184,8 @@ def problem_view(request, problem_link):
 			cnt = 0
 			verdict = 'accepted'
 			for test in problem.data['tests']:
-				user_output = execute(user_code, 'c', test)
-				author_output = execute(author_code, 'c', test)
+				user_output = execute(user_code, request.POST.get('language'), test).rstrip("\n")
+				author_output = execute(author_code, problem.data['language'], test).rstrip("\n")
 				if author_output == user_output:
 					cnt += 1
 				else:
@@ -211,6 +211,7 @@ def problem_view(request, problem_link):
 			return HttpResponseRedirect(reverse('submission', args = (problem_link,)))
 
 	except Exception as e:
+		print(e)
 		return HttpResponse('Problem not found')
 	return render(request, 'grader/problem.html', context=context)
 
@@ -300,6 +301,7 @@ def create_problem(request, test_link):
 		test_cases = request.POST.getlist('test-case')
 		sample_input = request.POST.get('sample-input')
 		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+		language = request.POST.get('language')
 		solution = request.POST.get('code')
 		marks = int(request.POST.get('marks'))
 
@@ -312,6 +314,7 @@ def create_problem(request, test_link):
 				'statement': statement,
 				'sample_input': sample_input,
 				'tests': test_cases,
+				'language': language,
 				'solution': solution,
 				'marks': marks
 			}
