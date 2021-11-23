@@ -135,6 +135,7 @@ class Program:
             else:
                 return 200, None
         except TimeoutExpired as tle:
+            write_data(self.actualOutputFile, 'time limit exceeded')
             return 408, tle
         except CalledProcessError as e:
             print(e.output)
@@ -161,13 +162,15 @@ def codechecker(filename, inputfile=None, actualoutput=None, timeout=1, check=Tr
         compileResult, compileErrors = newprogram.compile()
         if compileErrors is not None:
             sys.stdout.flush()
-            write_data(actualoutput, 'Compilation Error')
+            write_data(actualoutput, 'compilation error')
             return
 
         runtimeResult, runtimeErrors = newprogram.run()
+        if runtimeResult == 408:
+            return
         if runtimeErrors is not None:
             sys.stdout.flush()
-            write_data(actualoutput, 'Runtime Error')
+            write_data(actualoutput, 'runtime error')
             return
 
     else:

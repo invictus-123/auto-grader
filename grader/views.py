@@ -182,19 +182,27 @@ def problem_view(request, problem_link):
 			user_code = request.POST.get('code')
 			author_code = problem.data['solution']
 			cnt = 0
+			verdict = 'accepted'
 			for test in problem.data['tests']:
 				user_output = execute(user_code, 'c', test)
 				author_output = execute(author_code, 'c', test)
 				if author_output == user_output:
 					cnt += 1
 				else:
+					if user_output in ['compilation error', 'runtime error', 'time limit exceeded']:
+						verdict = user_output
 					break
 			score = problem.data['marks'] if cnt == len(problem.data['tests']) else 0
+
+			if score == 0 and verdict == 'accepted':
+				verdict = 'wrong answer'
 
 			submission = Submission(
 				user = request.user,
 				problem = problem,
 				submission_time = timezone.now(),
+				type = 'coding',
+				verdict = verdict,
 				solution = user_code,
 				score = score
 			)

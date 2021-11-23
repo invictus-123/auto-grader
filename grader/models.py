@@ -48,6 +48,8 @@ class Submission(models.Model):
     problem = models.ForeignKey(Problem, on_delete = models.CASCADE)
     submission_time = models.DateTimeField()
     solution = models.TextField(default = "")
+    type = models.TextField()
+    verdict = models.TextField(default = "submitted")
     score = models.IntegerField(default = 0)
     after_completion = models.BooleanField(default = False)
 

@@ -27,6 +27,9 @@
                                             <span class="mb-0 text-muted"> Problem </span>
                                         </th>
                                         <th>
+                                            <span class="mb-0 text-muted"> Verdict </span>
+                                        </th>
+                                        <th>
                                             <span class="mb-0 text-muted"> Score </span>
                                         </th>
                                     </tr>
@@ -47,6 +50,9 @@
                                                 <a class="link" href="{% url 'problem' submission.problem.link %}">
                                                     <span class="text-dark">{{ submission.problem|title }}</span>
                                                 </a>
+                                            </td>
+                                            <td class="text-muted">
+                                                {{ submission.verdict|title }}
                                             </td>
                                             <td class="text-muted">
                                                 {{ submission.score }}
