@@ -14,4 +14,6 @@ urlpatterns = [
 	url(r'^problem/(?P<problem_link>\w+)/submission$', views.submission, name='submission'),
 	path('create-test', views.create_test, name='create-test'),
 	url(r'^test/(?P<test_link>\w+)/create-problem$', views.create_problem, name='create-problem'),
+	url(r'^test/(?P<test_link>\w+)/delete$', views.delete_test, name='delete-test'),
+	url(r'^problem/(?P<problem_link>\w+)/delete$', views.delete_problem, name='delete-problem'),
 ]

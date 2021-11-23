@@ -47,6 +47,10 @@ body.my-login-page {
 	text-align: center;
 }
 
+.btn {
+	margin-bottom: 5px;
+}
+
 @media screen and (max-width: 425px) {
 	.my-login-page .card-wrapper {
 		width: 90%;

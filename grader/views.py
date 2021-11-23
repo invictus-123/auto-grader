@@ -160,18 +160,23 @@ def test_view(request, test_link):
 def problem_view(request, problem_link):
 
 	try:
+		role = UserRole.objects.get(user = request.user).role
 		problem = Problem.objects.get(link = problem_link)
 		sample_output = execute(problem.data['solution'], 'c', problem.data['sample_input'])
+		is_teacher = True if role == 'teacher' else False
+		cur_time = timezone.localtime(timezone.now())
+		not_started = True if problem.test.start_time > cur_time else False
+
 		context = {
 			'title': 'Problem - ' + problem.title,
 			'problem': problem,
 			'test_link': problem.test.link,
-			'sample_output': sample_output
+			'sample_output': sample_output,
+			'is_teacher': is_teacher,
+			'not_started': not_started
 		}
 
 		if request.method == 'POST':
-			role = UserRole.objects.get(user = request.user).role
-			cur_time = timezone.localtime(timezone.now())
 			if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
 				return HttpResponseRedirect(reverse('index'))
 			user_code = request.POST.get('code')
@@ -214,7 +219,7 @@ def submission(request, problem_link):
 		submissions = submissions.order_by('-submission_time')
 
 		page = request.GET.get('page', 1)
-		paginator = Paginator(submissions, 5)
+		paginator = Paginator(submissions, 10)
 		try:
 			paginated_submissions = paginator.page(page)
 		except PageNotAnInteger:
@@ -351,12 +356,71 @@ def result(request, test_link):
 
 		total = sum([problem.data['marks'] for problem in problems])
 
+		page = request.GET.get('page', 1)
+		paginator = Paginator(result, 10)
+		try:
+			paginated_result = paginator.page(page)
+		except PageNotAnInteger:
+			paginated_result = paginator.page(1)
+		except EmptyPage:
+			paginated_result = paginator.page(paginator.num_pages)
+
 		context = {
 			'title': test.title + ' - Result',
 			'total': total,
 			'test_link': test_link,
-			'result': result
+			'result': paginated_result
 		}
 		return render(request, 'grader/result.html', context=context)
 	except:
 		return HttpResponse('Error while loading the test')
+
+@login_required
+def delete_test(request, test_link):
+
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('index'))
+
+	test = Test.objects.get(link = test_link)
+	cur_time = timezone.localtime(timezone.now())
+	if test.start_time <= cur_time:
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+	if request.method == 'POST':
+		if 'yes' in request.POST:
+			test.delete()
+			return HttpResponseRedirect(reverse('index'))
+		else:
+			return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+	context = {
+		'title': test.title + ' - Delete',
+	}
+
+	return render(request, 'grader/delete.html', context=context)
+
+@login_required
+def delete_problem(request, problem_link):
+
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('index'))
+
+	problem = Problem.objects.get(link = problem_link)
+	cur_time = timezone.localtime(timezone.now())
+	if problem.test.start_time <= cur_time:
+		return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
+
+	if request.method == 'POST':
+		if 'yes' in request.POST:
+			problem.delete()
+			return HttpResponseRedirect(reverse('test', args = (problem.test.link,)))
+		else:
+			return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
+
+	context = {
+		'title': problem.title + ' - Delete',
+	}
+
+	return render(request, 'grader/delete.html', context=context)

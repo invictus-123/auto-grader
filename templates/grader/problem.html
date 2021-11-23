@@ -2,10 +2,12 @@
 
 {% block content %}
 
-    <div class="space">
-    </div>
+    <div class="space"></div>
     <a class="btn btn-primary" href="{% url 'test' test_link %}"><i class="fas fa-arrow-left"></i> Back</a>
-    <a class="btn btn-primary" href="{% url 'submission' problem.link %}">Submissions</a>
+    <a class="btn btn-primary" href="{% url 'submission' problem.link %}"><i class="fas fa-tasks"></i> Submissions</a>
+    {% if is_teacher and not_started %}
+        <a class="btn btn-primary" href="{% url 'delete-problem' problem.link %}"><i class="fas fa-trash"></i> Delete Problem</a>
+    {% endif %}
 
     <div class="mt-5">
         <div class="row">

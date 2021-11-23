@@ -53,4 +53,31 @@
             </div>
         </div>
     </div>
+
+    {% if result.has_other_pages %}
+        <div class="pagination-wrapper">
+            <div class="pagination">
+                {% if result.has_previous %}
+                    <a class="prev page-numbers" href="?page={{ result.previous_page_number }}">prev</a>
+                {% else %}
+                    <a class="disabled prev page-numbers">prev</a>
+                {% endif %}
+
+                {% for i in result.paginator.page_range %}
+                    {% if result.number == i %}
+                        <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                    {% else %}
+                        <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if result.has_next %}
+                    <a class="next page-numbers" href="?page={{ result.next_page_number }}">next</a>
+                {% else %}
+                    <a class="disabled next page-numbers">next</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock content %}
