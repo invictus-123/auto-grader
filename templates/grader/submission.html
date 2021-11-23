@@ -62,4 +62,30 @@
         </div>
     </div>
 
+    {% if submissions.has_other_pages %}
+        <div class="pagination-wrapper">
+            <div class="pagination">
+                {% if submissions.has_previous %}
+                    <a class="prev page-numbers" href="?page={{ submissions.previous_page_number }}">prev</a>
+                {% else %}
+                    <a class="disabled prev page-numbers">prev</a>
+                {% endif %}
+
+                {% for i in submissions.paginator.page_range %}
+                    {% if submissions.number == i %}
+                        <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                    {% else %}
+                        <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if submissions.has_next %}
+                    <a class="next page-numbers" href="?page={{ submissions.next_page_number }}">next</a>
+                {% else %}
+                    <a class="disabled next page-numbers">next</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock content %}

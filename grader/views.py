@@ -1,14 +1,16 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
+from django.utils import timezone
 from grader.forms import UserForm, UserRoleForm, StudentDetailsForm
 from grader.judge import execute
-from django.contrib.auth.models import User
 from grader.models import UserRole, StudentDetail, Test, Problem, Submission
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.db.models import F
+
 import hashlib, random, datetime, pytz
 
 def index(request):
@@ -30,7 +32,16 @@ def index(request):
 			tests = tests.filter(end_time__gte = cur_time)
 		context['is_teacher'] = True if role == 'teacher' else False
 		tests = tests.order_by('start_time')
-		context['tests'] = tests
+
+		page = request.GET.get('page', 1)
+		paginator = Paginator(tests, 5)
+		try:
+			paginated_tests = paginator.page(page)
+		except PageNotAnInteger:
+			paginated_tests = paginator.page(1)
+		except EmptyPage:
+			paginated_tests = paginator.page(paginator.num_pages)
+		context['tests'] = paginated_tests
 
 	return render(request, 'grader/index.html', context=context)
 
@@ -123,13 +134,23 @@ def test_view(request, test_link):
 		cur_time = timezone.localtime(timezone.now())
 		not_started = True if test.start_time > cur_time else False
 		has_ended = True if test.end_time <= cur_time else False
+
+		page = request.GET.get('page', 1)
+		paginator = Paginator(problems, 5)
+		try:
+			paginated_problems = paginator.page(page)
+		except PageNotAnInteger:
+			paginated_problems = paginator.page(1)
+		except EmptyPage:
+			paginated_problems = paginator.page(paginator.num_pages)
+
 		context = {
 			'title': 'Test - ' + test.title,
 			'is_teacher': is_teacher,
 			'test_link': test_link,
 			'has_ended': has_ended,
 			'not_started': not_started,
-			'problems': problems
+			'problems': paginated_problems
 		}
 		return render(request, 'grader/test.html', context=context)
 	except Exception as e:
@@ -191,10 +212,20 @@ def submission(request, problem_link):
 		submissions = Submission.objects.all().filter(user = request.user)
 		submissions = submissions.filter(problem = problem)
 		submissions = submissions.order_by('-submission_time')
+
+		page = request.GET.get('page', 1)
+		paginator = Paginator(submissions, 5)
+		try:
+			paginated_submissions = paginator.page(page)
+		except PageNotAnInteger:
+			paginated_submissions = paginator.page(1)
+		except EmptyPage:
+			paginated_submissions = paginator.page(paginator.num_pages)
+
 		context = {
 			'title': 'Submissions - ' + problem.title,
 			'problem_link': problem_link,
-			'submissions': submissions
+			'submissions': paginated_submissions
 		}
 
 	except Exception as e:
@@ -312,6 +343,11 @@ def result(request, test_link):
 				if len(sub) > 0:
 					cur['score'] += sub.first().score
 			result.append(cur)
+
+		result = sorted(result, key = lambda x: x['score'], reverse = True)
+
+		for i in range(len(result)):
+			result[i]['rank'] = i + 1
 
 		total = sum([problem.data['marks'] for problem in problems])
 

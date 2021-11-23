@@ -3,7 +3,7 @@
 {% block content %}
 
         {% if is_teacher %}
-            <a class="btn btn-primary" href="{% url 'create-test' %}">Create Test</a>
+            <a class="btn btn-primary" href="{% url 'create-test' %}"><i class="fas fa-plus"></i> Create Test</a>
         {% else %}
             <div class="space"></div>
             <div class="space"></div>
@@ -27,6 +27,31 @@
         {% else %}
         	<h1>Home</h1>
         {% endif %}
-        <div class="space">
-        </div>
+
+        {% if tests.has_other_pages %}
+            <div class="pagination-wrapper">
+                <div class="pagination">
+                    {% if tests.has_previous %}
+                        <a class="prev page-numbers" href="?page={{ tests.previous_page_number }}">prev</a>
+                    {% else %}
+                        <a class="disabled prev page-numbers">prev</a>
+                    {% endif %}
+
+                    {% for i in tests.paginator.page_range %}
+                        {% if tests.number == i %}
+                            <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                        {% else %}
+                            <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if tests.has_next %}
+                        <a class="next page-numbers" href="?page={{ tests.next_page_number }}">next</a>
+                    {% else %}
+                        <a class="disabled next page-numbers">next</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="space"></div>
 {% endblock content %}

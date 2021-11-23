@@ -66,16 +66,16 @@
 .navigation a:hover,
 .show-menu-btn:hover,
 .hide-menu-btn:hover {
-    color: #00ff0a;
+    color: #54eeff;
 }
 
 #toggle-btn {
     position: absolute;
     visibility: hidden;
-    /* z-index: -1111; */
+    z-index: -1111;
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width: 767px) {
     .show-menu-btn,
     .hide-menu-btn {
         display: block;

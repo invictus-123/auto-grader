@@ -15,6 +15,9 @@
                                 <thead>
                                     <tr>
                                         <th>
+                                            <span class="mb-0 text-muted"> Rank </span>
+                                        </th>
+                                        <th>
                                             <span class="mb-0 text-muted"> Student </span>
                                         </th>
                                         <th>
@@ -28,6 +31,9 @@
                                 <tbody>
                                     {% for entry in result %}
                                         <tr>
+                                            <td>
+                                                <span class="mb-0 text-muted">{{ entry.rank }}</span>
+                                            </td>
                                             <td>
                                                 <span class="mb-0 text-muted">{{ entry.username }}</span>
                                             </td>

@@ -5,7 +5,10 @@
     <div class="space"></div>
     <a class="btn btn-primary" href="{% url 'index' %}"><i class="fas fa-arrow-left"></i> Back</a>
     {% if is_teacher and not_started %}
-        <a class="btn btn-primary" href="{% url 'create-problem' test_link %}">Create Problem</a>
+        <a class="btn btn-primary" href="{% url 'create-problem' test_link %}"><i class="fas fa-plus"></i> Create Problem</a>
+    {% endif %}
+    {% if is_teacher and has_ended %}
+        <a class="btn btn-primary" href="{% url 'result' test_link %}"><i class="fas fa-list-alt"></i> Result</a>
     {% endif %}
 
     {% for problem in problems %}
@@ -21,8 +24,31 @@
             </div>
         </div>
     {% endfor %}
-    <div style="height:30px;"></div>
-    {% if is_teacher and has_ended %}
-        <a class="btn btn-primary" href="{% url 'result' test_link %}">Result</a>
+
+    {% if problems.has_other_pages %}
+        <div class="pagination-wrapper">
+            <div class="pagination">
+                {% if problems.has_previous %}
+                    <a class="prev page-numbers" href="?page={{ problems.previous_page_number }}">prev</a>
+                {% else %}
+                    <a class="disabled prev page-numbers">prev</a>
+                {% endif %}
+
+                {% for i in problems.paginator.page_range %}
+                    {% if problems.number == i %}
+                        <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                    {% else %}
+                        <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if problems.has_next %}
+                    <a class="next page-numbers" href="?page={{ problems.next_page_number }}">next</a>
+                {% else %}
+                    <a class="disabled next page-numbers">next</a>
+                {% endif %}
+            </div>
+        </div>
     {% endif %}
+
 {% endblock content %}
