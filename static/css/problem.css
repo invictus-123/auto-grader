@@ -72,3 +72,15 @@
 .language-picker select {
     border-radius: 50px;
 }
+
+.mcq-option {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+@media screen and (max-width: 767) {
+    .mcq-option {
+        margin: 0;
+        font-size: 5px;
+    }
+}

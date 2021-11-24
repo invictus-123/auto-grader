@@ -13,7 +13,7 @@
                     {% csrf_token %}
 
                     <label for="title">Title:</label>
-                    <input type="text" name="title" id="title" class="form-control mb-3" required>
+                    <input type="text" name="title" id="title" class="form-control mb-3">
 
                     <label for="type">Type:</label>
                     <select class="form-control" name="type" id="type">
@@ -23,42 +23,66 @@
                     <div style="height: 20px;"></div>
 
                     <label for="statement">Statement:</label>
-                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10" required></textarea>
+                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10"></textarea>
 
-                    <label for="sample-input">Sample Input:</label>
-                    <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5" required></textarea>
+                    <div id="coding">
+                        <label for="sample-input">Sample Input:</label>
+                        <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5"></textarea>
 
-                    <label for="test-cases">Test Cases:</label>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="test-cases">
-                            <thead>
-                                <tr>
-                                    <th class="text-center tcn">Test Case Number</th>
-                                    <th class="text-center tcd">Test Case Data</th>
-                                    <th class="text-center">Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody">
+                        <label for="test-cases">Test Cases:</label>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="test-cases">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center tcn">Test Case Number</th>
+                                        <th class="text-center tcd">Test Case Data</th>
+                                        <th class="text-center">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-md btn-primary" id="addBtn" type="button">
+                            Test case <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+
+                        <div style="height: 20px;"></div>
+
+                        <label for="language">Language:</label>
+                        <select class="form-control" name="language" id="language">
+                            <option value="c" selected>C</option>
+                            <option value="py">Python3</option>
+                        </select>
+                        <div style="height: 20px;"></div>
+
+                        <label for="code">Solution:</label>
+                        <div class="code-editor">
+                            <textarea name="code" id="code" placeholder="Enter your code here"></textarea>
+                        </div>
                     </div>
-                    <button class="btn btn-md btn-primary" id="addBtn" type="button">
-                        Test case <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
+                    <div id="mcq" style="display: none;">
+                        <label for="option1">Option 1:</label>
+                        <input type="text" name="option1" id="option1" class="form-control mb-3">
 
-                    <div style="height: 20px;"></div>
+                        <label for="option2">Option 2:</label>
+                        <input type="text" name="option2" id="option2" class="form-control mb-3">
 
-                    <label for="language">Language:</label>
-                    <select class="form-control" name="language" id="language">
-                        <option value="c" selected>C</option>
-                        <option value="py">Python3</option>
-                    </select>
-                    <div style="height: 20px;"></div>
+                        <label for="option3">Option 3:</label>
+                        <input type="text" name="option3" id="option3" class="form-control mb-3">
 
-                    <label for="code">Solution:</label>
-                    <div class="code-editor">
-                        <textarea name="code" id="code" placeholder="Enter your code here" required></textarea>
+                        <label for="option4">Option 4:</label>
+                        <input type="text" name="option4" id="option4" class="form-control mb-3">
+
+                        <label for="answer">Answer:</label>
+                        <select class="form-control" name="answer" id="answer">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                        </select>
+                        <div style="height: 20px;"></div>
                     </div>
 
                     <div style="height: 20px;"></div>

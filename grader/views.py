@@ -162,53 +162,86 @@ def problem_view(request, problem_link):
 	try:
 		role = UserRole.objects.get(user = request.user).role
 		problem = Problem.objects.get(link = problem_link)
-		sample_output = execute(problem.data['solution'], problem.data['language'], problem.data['sample_input'])
-		is_teacher = True if role == 'teacher' else False
 		cur_time = timezone.localtime(timezone.now())
+		is_teacher = True if role == 'teacher' else False
 		not_started = True if problem.test.start_time > cur_time else False
+		user_sub = Submission.objects.all().filter(problem = problem)
+		user_sub = user_sub.filter(user = request.user)
+		user_sub = user_sub.order_by('-submission_time')
+		if problem.type == 'coding':
+			print(problem.data)
+			sample_output = execute(problem.data['solution'], problem.data['language'], problem.data['sample_input'])
+			context = {
+				'title': 'Problem - ' + problem.title,
+				'problem': problem,
+				'test_link': problem.test.link,
+				'sample_output': sample_output,
+				'is_teacher': is_teacher,
+				'not_started': not_started
+			}
+		else:
+			context = {
+				'title': 'Problem - ' + problem.title,
+				'problem': problem,
+				'test_link': problem.test.link,
+				'is_teacher': is_teacher,
+				'not_started': not_started
+			}
 
-		context = {
-			'title': 'Problem - ' + problem.title,
-			'problem': problem,
-			'test_link': problem.test.link,
-			'sample_output': sample_output,
-			'is_teacher': is_teacher,
-			'not_started': not_started
-		}
+		if len(user_sub) > 0:
+			context['user_sub'] = user_sub.first()
+			print(context['user_sub'].solution)
 
 		if request.method == 'POST':
 			if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
 				return HttpResponseRedirect(reverse('index'))
-			user_code = request.POST.get('code')
-			author_code = problem.data['solution']
-			cnt = 0
-			verdict = 'accepted'
-			for test in problem.data['tests']:
-				user_output = execute(user_code, request.POST.get('language'), test).rstrip("\n")
-				author_output = execute(author_code, problem.data['language'], test).rstrip("\n")
-				if author_output == user_output:
-					cnt += 1
+			if problem.type == 'coding':
+				user_code = request.POST.get('code')
+				author_code = problem.data['solution']
+				cnt = 0
+				verdict = 'accepted'
+				for test in problem.data['tests']:
+					user_output = execute(user_code, request.POST.get('language'), test).rstrip("\n")
+					author_output = execute(author_code, problem.data['language'], test).rstrip("\n")
+					if author_output == user_output:
+						cnt += 1
+					else:
+						if user_output in ['compilation error', 'runtime error', 'time limit exceeded']:
+							verdict = user_output
+						break
+				score = problem.data['marks'] if cnt == len(problem.data['tests']) else 0
+
+				if score == 0 and verdict == 'accepted':
+					verdict = 'wrong answer'
+
+				submission = Submission(
+					user = request.user,
+					problem = problem,
+					submission_time = timezone.now(),
+					type = 'coding',
+					verdict = verdict,
+					language = request.POST.get('language'),
+					solution = user_code,
+					score = score
+				)
+				submission.save()
+				return HttpResponseRedirect(reverse('submission', args = (problem_link,)))
+			else:
+				if 'option' in request.POST:
+					selected_option = request.POST.get('option')
 				else:
-					if user_output in ['compilation error', 'runtime error', 'time limit exceeded']:
-						verdict = user_output
-					break
-			score = problem.data['marks'] if cnt == len(problem.data['tests']) else 0
-
-			if score == 0 and verdict == 'accepted':
-				verdict = 'wrong answer'
-
-			submission = Submission(
-				user = request.user,
-				problem = problem,
-				submission_time = timezone.now(),
-				type = 'coding',
-				verdict = verdict,
-				solution = user_code,
-				score = score
-			)
-			submission.save()
-
-			return HttpResponseRedirect(reverse('submission', args = (problem_link,)))
+					selected_option = 'unattempted'
+				score = problem.data['marks'] if selected_option == problem.data['answer'] else 0
+				submission = Submission(
+					user = request.user,
+					problem = problem,
+					submission_time = timezone.now(),
+					type = 'mcq',
+					solution = selected_option,
+					score = score
+				)
+				submission.save()
+				return HttpResponseRedirect(reverse('test', args = (problem.test.link,)))
 
 	except Exception as e:
 		print(e)
@@ -219,6 +252,8 @@ def problem_view(request, problem_link):
 def submission(request, problem_link):
 	try:
 		problem = Problem.objects.get(link = problem_link)
+		if problem.type == 'mcq':
+			return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
 		role = UserRole.objects.get(user = request.user).role
 		cur_time = timezone.localtime(timezone.now())
 		if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
@@ -298,18 +333,14 @@ def create_problem(request, test_link):
 		title = request.POST.get('title')
 		statement = request.POST.get('statement')
 		problem_type = request.POST.get('type')
-		test_cases = request.POST.getlist('test-case')
-		sample_input = request.POST.get('sample-input')
-		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
-		language = request.POST.get('language')
-		solution = request.POST.get('code')
 		marks = int(request.POST.get('marks'))
+		link = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
 
-		prob = Problem(
-			test = test,
-			title = title,
-			type = problem_type,
-			link = link,
+		if problem_type == 'coding':
+			test_cases = request.POST.getlist('test-case')
+			sample_input = request.POST.get('sample-input')
+			language = request.POST.get('language')
+			solution = request.POST.get('code')
 			data = {
 				'statement': statement,
 				'sample_input': sample_input,
@@ -318,6 +349,28 @@ def create_problem(request, test_link):
 				'solution': solution,
 				'marks': marks
 			}
+		else:
+			option1 = request.POST.get('option1')
+			option2 = request.POST.get('option2')
+			option3 = request.POST.get('option3')
+			option4 = request.POST.get('option4')
+			answer = request.POST.get('answer')
+			data = {
+				'statement': statement,
+				'option1': option1,
+				'option2': option2,
+				'option3': option3,
+				'option4': option4,
+				'answer': answer,
+				'marks': marks
+			}
+
+		prob = Problem(
+			test = test,
+			title = title,
+			type = problem_type,
+			link = link,
+			data = data
 		)
 		prob.save()
 
@@ -355,7 +408,10 @@ def result(request, test_link):
 			for problem in problems:
 				sub = Submission.objects.all().filter(user = student.user)
 				sub = sub.filter(problem = problem)
-				sub = sub.order_by('-score')
+				if problem.type == 'coding':
+					sub = sub.order_by('-score')
+				else:
+					sub = sub.order_by('-submission_time')
 				if len(sub) > 0:
 					cur['score'] += sub.first().score
 			result.append(cur)

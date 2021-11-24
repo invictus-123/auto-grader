@@ -4,72 +4,118 @@
 
     <div class="space"></div>
     <a class="btn btn-primary" href="{% url 'test' test_link %}"><i class="fas fa-arrow-left"></i> Back</a>
-    <a class="btn btn-primary" href="{% url 'submission' problem.link %}"><i class="fas fa-tasks"></i> Submissions</a>
+    {% if problem.type == 'coding' %}
+        <a class="btn btn-primary" href="{% url 'submission' problem.link %}"><i class="fas fa-tasks"></i> Submissions</a>
+    {% endif %}
     {% if is_teacher and not_started %}
         <a class="btn btn-primary" href="{% url 'delete-problem' problem.link %}"><i class="fas fa-trash"></i> Delete Problem</a>
     {% endif %}
 
-    <div class="mt-5">
-        <div class="row">
+    {% if problem.type == 'coding' %}
+        <div class="mt-5">
+            <div class="row">
 
-            <!-- Problem Statement -->
-            <div class="col-lg-6 test">
-                <article>
-                    <header class="mb-4">
-                        <h3 class="fw-b mb-2">{{ problem.title|title }}</h3>
-                        <div class="text-muted fst-italic mb-2">
-                            {% if problem.type == 'coding'%}
-                                Coding
-                            {% elif problem.type == 'mcq' %}
-                                MCQ
-                            {% else %}
-                                Subjective
-                            {% endif %}
-                        </div>
-                    </header>
+                <!-- Problem Statement -->
+                <div class="col-lg-6 test">
+                    <article>
+                        <header class="mb-4">
+                            <h3 class="fw-b mb-2">{{ problem.title|title }}</h3>
+                            <div class="text-muted fst-italic mb-2">
+                                    Coding
+                            </div>
+                        </header>
 
-                    <section class="mb-4">
-                        <p class="fs-5 mb-4">
-                            {{ problem.data.statement }}
+                        <section class="mb-4">
+                            <p class="fs-5 mb-4">
+                                {{ problem.data.statement }}
+                            </p>
+                        </section>
+                    </article>
+                    <section class="mb-5">
+                        <p class="fs-5 mb-2">
+                            $\textbf{Sample Input:}$
                         </p>
+                        <p>
+                            {{ problem.data.sample_input }}
+                        </p>
+                        <p class="fs-5 mb-2">
+                            $\textbf{Expected Output:}$
+                        </p>
+                        <p>
+                            {{ sample_output }}
+                        </p>
+
                     </section>
-                </article>
-                <section class="mb-5">
-                    <p class="fs-5 mb-2">
-                        $\textbf{Sample Input:}$
-                    </p>
-                    <p>
-                        {{ problem.data.sample_input }}
-                    </p>
-                    <p class="fs-5 mb-2">
-                        $\textbf{Expected Output:}$
-                    </p>
-                    <p>
-                        {{ sample_output }}
-                    </p>
 
-                </section>
+                </div>
 
-            </div>
-
-            <!-- Code Editor -->
-            <div class="col-lg-6 code-editor">
-                <form method="POST" class="my-login-validation">
-                    {% csrf_token %}
-                    <div class="col-lg-4 language-picker">
-                        <select class="form-control" name="language">
-                            <option value="c" selected>C</option>
-                            <option value="py">Python3</option>
-                        </select>
-                    </div>
-                    <textarea name="code" id="code" placeholder="Enter your code here" required></textarea>
-                    <p>
-                        <button type="submit" id="submit-code" class="submit-code btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
-                    </p>
-                    <div class="space"></div>
-                </form>
+                <!-- Code Editor -->
+                <div class="col-lg-6 code-editor">
+                    <form method="POST" class="my-login-validation">
+                        {% csrf_token %}
+                        <div class="col-lg-4 language-picker">
+                            <select class="form-control" name="language">
+                                <option value="c" {% if user_sub %}{% if user_sub.language == 'c' %}selected{% endif %}{% endif %}>C</option>
+                                <option value="py" {% if user_sub %}{% if user_sub.language == 'py' %}selected{% endif %}{% endif %}>Python3</option>
+                            </select>
+                        </div>
+                        <textarea name="code" id="code" placeholder="Enter your code here" required>{% if user_sub %}{{ user_sub.solution }}{% endif %}</textarea>
+                        <p>
+                            <button type="submit" id="submit-code" class="submit-code btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
+                        </p>
+                        <div class="space"></div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="mt-5">
+            <div class="row">
+                <div class="test col-lg-12">
+                    <article>
+                        <header class="mb-4">
+                            <h3 class="fw-b mb-2">{{ problem.title|title }}</h3>
+                            <div class="text-muted fst-italic mb-2">
+                                    MCQ
+                            </div>
+                        </header>
+
+                        <section class="mb-4">
+                            <p class="fs-5 mb-4">
+                                {{ problem.data.statement }}
+                            </p>
+                        </section>
+                    </article>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="POST" class="my-login-validation">
+                        {% csrf_token %}
+                        <div class="mcq-option col-lg-6 col-xs-12 form-control">
+                            <input type="radio" name="option" id="option1" value="option1" {% if user_sub %}{% if user_sub.solution == 'option1' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="option1">{{ problem.data.option1 }}</label>
+                        </div>
+                        <div class="mcq-option col-lg-6 col-xs-12 form-control">
+                            <input type="radio" name="option" id="option2" value="option2" {% if user_sub %}{% if user_sub.solution == 'option2' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="option2">{{ problem.data.option2 }}</label>
+                        </div>
+                        <div class="mcq-option col-lg-6 col-xs-12 form-control">
+                            <input type="radio" name="option" id="option3" value="option3" {% if user_sub %}{% if user_sub.solution == 'option3' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="option3">{{ problem.data.option3 }}</label>
+                        </div>
+                        <div class="mcq-option col-lg-6 col-xs-12 form-control">
+                            <input type="radio" name="option" id="option4" value="option4" {% if user_sub %}{% if user_sub.solution == 'option4' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="option4">{{ problem.data.option4 }}</label>
+                        </div>
+                        <p>
+                            <button type="submit" id="submit-code" class="submit-code btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
+                            <button type="button" id="clear-options" class="submit-code btn btn-primary">Clear</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock content %}

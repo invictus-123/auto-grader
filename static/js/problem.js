@@ -89,3 +89,9 @@ function setCaretPosition(ctrl, pos) {
         range.select();
     }
 }
+
+document.getElementById('clear-options').addEventListener('click', function() {
+    ["option1", "option2", "option3", "option4"].forEach(function(id) {
+        document.getElementById(id).checked = false;
+    });
+});

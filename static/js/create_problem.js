@@ -23,3 +23,14 @@ $('#tbody').on('click', '.remove', function () {
     $(this).closest('tr').remove();
     testRowIdx--;
 });
+
+$(document).on('change','#type',function() {
+    if($("#type option:selected").text() == 'Coding'){
+        $('#coding').show();
+        $('#mcq').hide();
+    }
+    else {
+        $('#coding').hide();
+        $('#mcq').show();
+    }
+});
