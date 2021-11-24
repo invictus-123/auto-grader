@@ -5,7 +5,7 @@ $('#addBtn').on('click', function () {
         <tr id="R${++ testRowIdx}">
             <td class="row-index text-center"><p>#${testRowIdx}</p></td>
             <td class="text-center"><textarea type="text" class="test-data" name="test-case" required></textarea></td>
-            <td class="text-center"><a class="btn btn-xs delete-record remove" data-id="3"><i class="fa fa-trash-o" style="font-size:24px"></i></a></td>
+            <td class="text-center"><a class="btn btn-xs delete-record remove" data-id="3"><i class="far fa-trash-alt" style="font-size:24px"></i></a></td>
         </tr>
     `
     $('#tbody').append(newRow);
