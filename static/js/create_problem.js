@@ -1,6 +1,7 @@
 var testRowIdx = 0;
 
 $('#addBtn').on('click', function () {
+    testRowIdx = Math.max(0, testRowIdx);
     var newRow = `
         <tr id="R${++ testRowIdx}">
             <td class="row-index text-center"><p>#${testRowIdx}</p></td>
@@ -24,13 +25,54 @@ $('#tbody').on('click', '.remove', function () {
     testRowIdx--;
 });
 
-$(document).on('change','#type',function() {
-    if($("#type option:selected").text() == 'Coding'){
+$(document).on('change','#type', function() {
+    if($("#type option:selected").text() == 'Coding') {
         $('#coding').show();
         $('#mcq').hide();
+        $("#sample-input").attr("required", true);
+        $("#code").attr("required", true);
+        $("#option1").attr("required", false);
+        $("#option2").attr("required", false);
+        $("#option3").attr("required", false);
+        $("#option4").attr("required", false);
+        $("#answer").attr("required", false);
     }
     else {
         $('#coding').hide();
         $('#mcq').show();
+        $("#sample-input").attr("required", false);
+        $("#code").attr("required", false);
+        $("test-case").attr("required", false);
+        $("#option1").attr("required", true);
+        $("#option2").attr("required", true);
+        $("#option3").attr("required", true);
+        $("#option4").attr("required", true);
+        $("#answer").attr("required", true);
+    }
+});
+
+$(document).ready(function() {
+    if($("#type option:selected").text() == 'Coding') {
+        $('#coding').show();
+        $('#mcq').hide();
+        $("#sample-input").attr("required", true);
+        $("#code").attr("required", true);
+        $("#option1").attr("required", false);
+        $("#option2").attr("required", false);
+        $("#option3").attr("required", false);
+        $("#option4").attr("required", false);
+        $("#answer").attr("required", false);
+    }
+    else {
+        $('#coding').hide();
+        $('#mcq').show();
+        $("#sample-input").attr("required", false);
+        $("#code").attr("required", false);
+        $("test-case").attr("required", false);
+        $("#option1").attr("required", true);
+        $("#option2").attr("required", true);
+        $("#option3").attr("required", true);
+        $("#option4").attr("required", true);
+        $("#answer").attr("required", true);
     }
 });

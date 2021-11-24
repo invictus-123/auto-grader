@@ -13,7 +13,7 @@
                     {% csrf_token %}
 
                     <label for="title">Title:</label>
-                    <input type="text" name="title" id="title" class="form-control mb-3">
+                    <input type="text" name="title" id="title" class="form-control mb-3" required>
 
                     <label for="type">Type:</label>
                     <select class="form-control" name="type" id="type">
@@ -23,11 +23,11 @@
                     <div style="height: 20px;"></div>
 
                     <label for="statement">Statement:</label>
-                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10"></textarea>
+                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10" required></textarea>
 
                     <div id="coding">
                         <label for="sample-input">Sample Input:</label>
-                        <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5"></textarea>
+                        <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5" required></textarea>
 
                         <label for="test-cases">Test Cases:</label>
                         <div class="table-responsive">
@@ -59,7 +59,7 @@
 
                         <label for="code">Solution:</label>
                         <div class="code-editor">
-                            <textarea name="code" id="code" placeholder="Enter your code here"></textarea>
+                            <textarea name="code" id="code" placeholder="Enter your code here" required></textarea>
                         </div>
                     </div>
                     <div id="mcq" style="display: none;">

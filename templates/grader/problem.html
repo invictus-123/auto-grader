@@ -8,7 +8,8 @@
         <a class="btn btn-primary" href="{% url 'submission' problem.link %}"><i class="fas fa-tasks"></i> Submissions</a>
     {% endif %}
     {% if is_teacher and not_started %}
-        <a class="btn btn-primary" href="{% url 'delete-problem' problem.link %}"><i class="fas fa-trash"></i> Delete Problem</a>
+        <a class="btn btn-primary" href="{% url 'edit-problem' problem.link %}"><i class="fas fa-edit"></i> Edit</a>
+        <a class="btn btn-primary" href="{% url 'delete-problem' problem.link %}"><i class="fas fa-trash"></i> Delete</a>
     {% endif %}
 
     {% if problem.type == 'coding' %}

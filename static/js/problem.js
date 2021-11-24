@@ -90,8 +90,11 @@ function setCaretPosition(ctrl, pos) {
     }
 }
 
-document.getElementById('clear-options').addEventListener('click', function() {
-    ["option1", "option2", "option3", "option4"].forEach(function(id) {
-        document.getElementById(id).checked = false;
+const clearBtn = document.getElementById('clear-options');
+if(clearBtn) {
+    document.getElementById('clear-options').addEventListener('click', function() {
+        ["option1", "option2", "option3", "option4"].forEach(function(id) {
+            document.getElementById(id).checked = false;
+        });
     });
-});
+}

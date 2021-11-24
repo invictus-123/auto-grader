@@ -1,0 +1,88 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+    <div class="space"></div>
+
+    <div class="h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="w-75">
+                <a class="btn btn-primary" href="{% url 'problem' problem.link %}"><i class="fas fa-arrow-left"></i> Back</a>
+                <div class="space"></div>
+                <h4 class="card-title">Edit Problem</h4>
+                <form method="POST" class="my-login-validation">
+                    {% csrf_token %}
+
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" class="form-control mb-3" value="{{ problem.title }}" required>
+
+                    <label for="type">Type:</label>
+                    <select class="form-control" name="type" id="type">
+                        <option value="coding" {% if problem.type == 'coding' %}selected{% endif %}>Coding</option>
+                        <option value="mcq" {% if problem.type == 'mcq' %}selected{% endif %}>MCQ</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="statement">Statement:</label>
+                    <textarea name="statement" id="statement" class="form-control mb-3 test-data" rows="10" required>{{ problem.data.statement }}</textarea>
+
+                    <div id="coding">
+                        <label for="sample-input">Sample Input:</label>
+                        <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5" required>{{ problem.data.sample_input }}</textarea>
+
+                        <label for="language">Language:</label>
+                        <select class="form-control" name="language" id="language">
+                            <option value="c" {% if problem.data.language == 'c' %}selected{% endif %}>C</option>
+                            <option value="py" {% if problem.data.language == 'py' %}selected{% endif %}>Python3</option>
+                        </select>
+                        <div style="height: 20px;"></div>
+
+                        <label for="code">Solution:</label>
+                        <div class="code-editor">
+                            <textarea name="code" id="code" placeholder="Enter your code here" required>{{ problem.data.solution }}</textarea>
+                        </div>
+                    </div>
+                    <div id="mcq" style="display: none;">
+                        <label for="option1">Option 1:</label>
+                        <input type="text" name="option1" id="option1" value="{{ problem.data.option1 }}" class="form-control mb-3">
+
+                        <label for="option2">Option 2:</label>
+                        <input type="text" name="option2" id="option2" value="{{ problem.data.option2 }}" class="form-control mb-3">
+
+                        <label for="option3">Option 3:</label>
+                        <input type="text" name="option3" id="option3" value="{{ problem.data.option3 }}" class="form-control mb-3">
+
+                        <label for="option4">Option 4:</label>
+                        <input type="text" name="option4" id="option4" value="{{ problem.data.option4 }}" class="form-control mb-3">
+
+                        <label for="answer">Answer:</label>
+                        <select class="form-control" name="answer" id="answer">
+                            <option value="option1" {% if problem.data.answer == 'option1' %}selected{% endif %}>Option 1</option>
+                            <option value="option2" {% if problem.data.answer == 'option2' %}selected{% endif %}>Option 2</option>
+                            <option value="option3" {% if problem.data.answer == 'option3' %}selected{% endif %}>Option 3</option>
+                            <option value="option4" {% if problem.data.answer == 'option4' %}selected{% endif %}>Option 4</option>
+                        </select>
+                        <div style="height: 20px;"></div>
+                    </div>
+
+                    <div style="height: 20px;"></div>
+
+                    <label for="marks">Marks:</label>
+                    <input type="text" name="marks" id="marks" class="form-control mb-3" value="{{ problem.data.marks }}" required>
+
+                    <div style="height: 20px;"></div>
+
+                    <div class="row">
+                        <div class="form-group m-0 create-button col-md-4 col-xs-6">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="space">
+
+    </div>
+{% endblock content %}

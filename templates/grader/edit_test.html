@@ -1,0 +1,59 @@
+{% extends "grader/base.html" %}
+
+{% block content %}
+    <div class="space"></div>
+    <div class="h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="w-75">
+                <a class="btn btn-primary" href="{% url 'index' %}"><i class="fas fa-arrow-left"></i> Back</a>
+                <div class="space"></div>
+                <h4 class="card-title">Edit Test</h4>
+                <form method="POST" class="my-login-validation">
+                    {% csrf_token %}
+
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" class="form-control mb-3" value="{{ test.title }}" required>
+
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" name="semester" id="semester">
+                        <option value="1" {% if test.semester == 1%}selected{% endif %}>I</option>
+                        <option value="2" {% if test.semester == 2%}selected{% endif %}>II</option>
+                        <option value="3" {% if test.semester == 3%}selected{% endif %}>III</option>
+                        <option value="4" {% if test.semester == 4%}selected{% endif %}>IV</option>
+                        <option value="5" {% if test.semester == 5%}selected{% endif %}>V</option>
+                        <option value="6" {% if test.semester == 6%}selected{% endif %}>VI</option>
+                        <option value="7" {% if test.semester == 7%}selected{% endif %}>VII</option>
+                        <option value="8" {% if test.semester == 8%}selected{% endif %}>VIII</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="branch">Branch:</label>
+                    <select class="form-control" name="branch" id="branch">
+                        <option value="cse" {% if test.branch == 'cse'%}selected{% endif %}>Computer Science and Engineering</option>
+                        <option value="ece" {% if test.branch == 'ece'%}selected{% endif %}>Electronics and Communication Engineering</option>
+                        <option value="me" {% if test.branch == 'me'%}selected{% endif %}>Mechanical Engineering</option>
+                        <option value="ce" {% if test.branch == 'ce'%}selected{% endif %}>Civil Engienering</option>
+                        <option value="ee" {% if test.branch == 'ee'%}selected{% endif %}>Electrical Engineering</option>
+                    </select>
+                    <div style="height: 20px;"></div>
+
+                    <label for="duration">Duration:</label>
+                    <input type="text" name="duration" id="duration" class="form-control mb-3" value="{{ test.duration }}" required>
+
+                    <div style="height: 20px;"></div>
+
+                    <div class="row">
+                        <div class="form-group m-0 create-button col-md-4 col-xs-6">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="space">
+
+    </div>
+{% endblock content %}

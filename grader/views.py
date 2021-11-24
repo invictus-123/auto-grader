@@ -489,3 +489,87 @@ def delete_problem(request, problem_link):
 	}
 
 	return render(request, 'grader/delete.html', context=context)
+
+@login_required
+def edit_test(request, test_link):
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+	test = Test.objects.get(link = test_link)
+	cur_time = timezone.localtime(timezone.now())
+	if test.start_time <= cur_time:
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
+
+	if request.method == 'POST':
+		test.title = request.POST.get('title')
+		test.semester = request.POST.get('semester')
+		test.branch = request.POST.get('branch')
+		test.duration = int(request.POST.get('duration'))
+		test.end_time = pytz.timezone('Asia/Kolkata').localize(datetime.datetime.strptime(test.start_time, '%Y-%m-%dT%H:%M')) + datetime.timedelta(minutes = int(request.POST.get('duration')))
+
+		test.save()
+
+		return HttpResponseRedirect(reverse('index'))
+
+	context = {
+		'title': test.title + ' - Edit',
+		'test': test
+	}
+	return render(request, 'grader/edit_test.html', context=context)
+
+@login_required
+def edit_problem(request, problem_link):
+	role = UserRole.objects.get(user = request.user).role
+	if role == 'student':
+		return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
+
+	problem = Problem.objects.get(link = problem_link)
+	cur_time = timezone.localtime(timezone.now())
+	if problem.test.start_time <= cur_time:
+		return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
+
+	if request.method == 'POST':
+		problem.title = request.POST.get('title')
+		problem.type = request.POST.get('type')
+		marks = int(request.POST.get('marks'))
+
+		statement = request.POST.get('statement')
+
+		if request.POST.get('type') == 'coding':
+			test_cases = problem.tests
+			sample_input = request.POST.get('sample-input')
+			language = request.POST.get('language')
+			solution = request.POST.get('code')
+			problem.data = {
+				'statement': statement,
+				'sample_input': sample_input,
+				'tests': test_cases,
+				'language': language,
+				'solution': solution,
+				'marks': marks
+			}
+		else:
+			option1 = request.POST.get('option1')
+			option2 = request.POST.get('option2')
+			option3 = request.POST.get('option3')
+			option4 = request.POST.get('option4')
+			answer = request.POST.get('answer')
+			problem.data = {
+				'statement': statement,
+				'option1': option1,
+				'option2': option2,
+				'option3': option3,
+				'option4': option4,
+				'answer': answer,
+				'marks': marks
+			}
+		problem.save()
+
+		return HttpResponseRedirect(reverse('problem', args = (problem_link,)))
+
+	context = {
+		'title': problem.title + ' - Edit',
+		'problem': problem
+	}
+	return render(request, 'grader/edit_problem.html', context=context)

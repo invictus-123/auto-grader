@@ -10,6 +10,10 @@ body.my-login-page {
 	font-size: 15px;
 }
 
+.container .row {
+	clear:both
+}
+
 .my-login-page .card-wrapper {
 	width: 400px;
 }
