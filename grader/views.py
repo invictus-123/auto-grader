@@ -169,7 +169,6 @@ def problem_view(request, problem_link):
 		user_sub = user_sub.filter(user = request.user)
 		user_sub = user_sub.order_by('-submission_time')
 		if problem.type == 'coding':
-			print(problem.data)
 			sample_output = execute(problem.data['solution'], problem.data['language'], problem.data['sample_input'])
 			context = {
 				'title': 'Problem - ' + problem.title,
@@ -190,7 +189,6 @@ def problem_view(request, problem_link):
 
 		if len(user_sub) > 0:
 			context['user_sub'] = user_sub.first()
-			print(context['user_sub'].solution)
 
 		if request.method == 'POST':
 			if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':

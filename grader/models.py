@@ -52,7 +52,6 @@ class Submission(models.Model):
     type = models.TextField()
     verdict = models.TextField(default = "submitted")
     score = models.IntegerField(default = 0)
-    after_completion = models.BooleanField(default = False)
 
     def __str__(self):
         return str(self.user) + " " + str(self.problem)
