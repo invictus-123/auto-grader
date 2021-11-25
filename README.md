@@ -79,7 +79,10 @@ Tests, problems, submissions and result are limited to 5 to 10 entries per page.
 The application is fully responsive and is tested on Chrome, Firefox and Opera.
 
 ## Tech Stacks
-* **Frontend** HTML, CSS, Bootstrap 4, JavaScript, jQuery
+* **Frontend:** HTML, CSS, Bootstrap 4, JavaScript, jQuery
 * **Language:** Python 3.6
-* **Framework** Django 3.0
-* **Database** SQLite3
+* **Framework:** Django 3.0
+* **Database:** SQLite3
+
+## Deployment
+Heroku link: [https://radiant-wildwood-82518.herokuapp.com/](https://radiant-wildwood-82518.herokuapp.com/)
