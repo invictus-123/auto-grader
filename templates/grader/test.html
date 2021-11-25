@@ -11,7 +11,7 @@
         <a class="btn btn-primary" href="{% url 'edit-test' test_link %}"><i class="fas fa-edit"></i> Edit</a>
         <a class="btn btn-primary" href="{% url 'delete-test' test_link %}"><i class="fas fa-trash"></i> Delete</a>
     {% endif %}
-    {% has_ended %}
+    {% if has_ended %}
         <a class="btn btn-primary" href="{% url 'result' test_link %}"><i class="fas fa-list-alt"></i> Result</a>
     {% endif %}
 

@@ -154,6 +154,7 @@ def test_view(request, test_link):
 		}
 		return render(request, 'grader/test.html', context=context)
 	except Exception as e:
+		print(e)
 		return HttpResponse('Test not found')
 
 @login_required
@@ -163,6 +164,8 @@ def problem_view(request, problem_link):
 		role = UserRole.objects.get(user = request.user).role
 		problem = Problem.objects.get(link = problem_link)
 		cur_time = timezone.localtime(timezone.now())
+		if (problem.test.start_time >= cur_time or problem.test.end_time <= cur_time) and role == 'student':
+			return HttpResponseRedirect(reverse('index'))
 		is_teacher = True if role == 'teacher' else False
 		not_started = True if problem.test.start_time > cur_time else False
 		user_sub = Submission.objects.all().filter(problem = problem)
