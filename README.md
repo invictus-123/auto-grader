@@ -57,7 +57,7 @@ Teachers can delete the tests or problems before the test starts.
 
 ### Test list view
 A teacher can see all the tests that were created by them.
-A student can see all the current and upcoming tests which are intended for their branch and semester.
+A student can see all the tests which are intended for their branch and semester.
 
 ### Problem list view
 Students and teachers can see the list of all problems under a particular test.
@@ -83,7 +83,7 @@ Teacher can automatically generate the result once the test is over.
 Tests, problems, submissions and result are limited to 5 to 10 entries per page.
 
 ### Responsive
-The application is fully responsive and is tested on Chrome, Firefox and Opera.
+The application is fully responsive and is tested on Chrome, Edge, Firefox and Opera.
 
 ## Tech Stacks
 * **Frontend:** HTML, CSS, Bootstrap 4, JavaScript, jQuery

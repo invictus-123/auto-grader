@@ -9,21 +9,27 @@
         <div class="space"></div>
     {% endif %}
     {% if request.user.is_authenticated %}
-        {% for test in tests %}
-            <div class="test-card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ test.title|title }}</h5>
-                    <p class="card-text">
-                        Duration: {{ test.start_time }}
-                        <br>
-                        Duration: {{ test.duration }} minutes
-                        <br>
-                        Teacher: {{ test.user.username }}
-                    </p>
-                    <a href="{% url 'test' test.link %}" class="btn btn-primary">Open</a>
+        {% if tests %}
+            {% for test in tests %}
+                <div class="test-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ test.title|title }}</h5>
+                        <p class="card-text">
+                            Duration: {{ test.start_time }}
+                            <br>
+                            Duration: {{ test.duration }} minutes
+                            <br>
+                            Teacher: {{ test.user.username }}
+                        </p>
+                        <a href="{% url 'test' test.link %}" class="btn btn-primary">Open</a>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p class="about">
+                No tests available...
+            </p>
+        {% endif %}
     {% else %}
         <div class="jumbotron">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

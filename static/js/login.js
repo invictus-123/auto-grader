@@ -74,3 +74,13 @@ $(function() {
         }
     });
 });
+
+$(document).ready(function() {
+	if($("#role option:selected").text() == 'Student'){
+		console.log($("#role option:selected").text());
+		$('#spoiler').show();
+	}
+	else {
+		$('#spoiler').hide();
+	}
+});
