@@ -31,9 +31,9 @@ $ source env/bin/activate
 
 ### Step 2: Enable debug mode
 Set
-'''python:
+```python:
 DEBUG = True
-'''
+```
 in my_site/settings.py
 
 ### Step 3: Run the server
