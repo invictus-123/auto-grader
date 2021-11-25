@@ -31,7 +31,7 @@ $ source env/bin/activate
 
 ### Step 2: Enable debug mode
 Set
-'''Python
+'''python:
 DEBUG = True
 '''
 in my_site/settings.py
