@@ -29,6 +29,33 @@
                         <label for="sample-input">Sample Input:</label>
                         <textarea name="sample-input" id="sample-input" class="form-control mb-3 test-data" rows="5" required>{{ problem.data.sample_input }}</textarea>
 
+                        <label for="test-cases">Test Cases:</label>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="test-cases">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center tcn">Test Case Number</th>
+                                        <th class="text-center tcd">Test Case Data</th>
+                                        <th class="text-center">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    {% for test in problem.data.tests %}
+                                        <tr id="R{{ forloop.counter }}">
+                                            <td class="row-index text-center"><p>#{{ forloop.counter }}</p></td>
+                                            <td class="text-center"><textarea type="text" class="test-data" name="test-case" required>{{ test }}</textarea></td>
+                                            <td class="text-center"><a class="btn btn-xs delete-record remove" data-id="3"><i class="far fa-trash-alt" style="font-size:24px"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-md btn-primary" id="addBtn" type="button">
+                            Test case <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+
+                        <div style="height: 20px;"></div>
+
                         <label for="language">Language:</label>
                         <select class="form-control" name="language" id="language">
                             <option value="c" {% if problem.data.language == 'c' %}selected{% endif %}>C</option>

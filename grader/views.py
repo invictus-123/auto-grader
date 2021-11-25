@@ -537,7 +537,7 @@ def edit_problem(request, problem_link):
 		statement = request.POST.get('statement')
 
 		if request.POST.get('type') == 'coding':
-			test_cases = problem.tests
+			test_cases = request.POST.getlist('test-case')
 			sample_input = request.POST.get('sample-input')
 			language = request.POST.get('language')
 			solution = request.POST.get('code')

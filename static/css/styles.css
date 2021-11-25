@@ -1,5 +1,15 @@
 body {
 	font-family: "Audiowide", sans-serif;
+	/* gray */
+	/* background-color: #e0e0e0; */
+	/* light blue-gray */
+	background-color: #e8eced;
+	/* nav hover color */
+	/* background-color: #54eeff; */
+	/* light purple */
+	/* background-color: #f8f5ff; */
+	/* light-green */
+	/* background-color: #f0f7f0; */
 }
 
 html, body {
@@ -14,6 +24,11 @@ body.my-login-page {
 	clear:both
 }
 
+.jumbotron {
+	background-color: #fff;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
 .my-login-page .card-wrapper {
 	width: 400px;
 }
@@ -22,7 +37,7 @@ body.my-login-page {
 	border-color: transparent;
     margin-top: 25%;
 	margin-bottom: 25%;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .my-login-page .card.fat {
