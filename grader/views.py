@@ -385,8 +385,6 @@ def result(request, test_link):
 
 	try:
 		role = UserRole.objects.get(user = request.user).role
-		if role == 'student':
-			return HttpResponseRedirect(reverse('test', args = (test_link,)))
 
 		test = Test.objects.get(link = test_link)
 		cur_time = timezone.localtime(timezone.now())
