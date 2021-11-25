@@ -31,9 +31,9 @@ $ source env/bin/activate
 
 ### Step 2: Enable debug mode
 Set
-'''Python
+```python:
 DEBUG = True
-'''
+```
 in my_site/settings.py
 
 ### Step 3: Run the server
@@ -83,7 +83,7 @@ Teacher can automatically generate the result once the test is over.
 Tests, problems, submissions and result are limited to 5 to 10 entries per page.
 
 ### Responsive
-The application is fully responsive and is tested on Chrome, Edge, Firefox and Opera.
+The application is fully responsive and is tested on Chrome, Firefox and Opera.
 
 ## Tech Stacks
 * **Frontend:** HTML, CSS, Bootstrap 4, JavaScript, jQuery
