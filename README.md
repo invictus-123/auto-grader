@@ -29,7 +29,14 @@ $ source env/bin/activate
 (env)$ python manage.py migrate
 ```
 
-### Step 2: Run the server
+### Step 2: Enable debug mode
+Set
+'''Python
+DEBUG = True
+'''
+in my_site/settings.py
+
+### Step 3: Run the server
 ```bash
 (env)$ python manage.py runserver
 ```
