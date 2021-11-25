@@ -24,6 +24,7 @@ $ source env/bin/activate
 
 ### Step 1: Migrate the database
 ```bash
+(env)$ python manage.py migrate
 (env)$ python manage.py makemigrations
 (env)$ python manage.py makemigrations grader
 (env)$ python manage.py migrate
