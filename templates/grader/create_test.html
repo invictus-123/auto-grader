@@ -38,7 +38,10 @@
                     <div style="height: 20px;"></div>
 
                     <label for="duration">Duration:</label>
-                    <input type="text" name="duration" id="duration" class="form-control mb-3" required>
+                    <input type="text" pattern="[0-9]*[1-9][0-9]*" title="Duration must be a positive number!" name="duration" id="duration" class="form-control mb-3"
+                    oninvalid="setCustomValidity('Duration must be a positive number!')"
+                    oninput="setCustomValidity('')"
+                    required />
 
                     <label for="starttime">Start Time:</label>
                     <input type="datetime-local" name="starttime" id="starttime" class="form-control mb-3" required>
