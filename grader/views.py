@@ -194,9 +194,9 @@ def test_view(request, test_link):
 		not_started = True if test.start_time > cur_time else False
 		has_ended = True if test.end_time <= cur_time else False
 
-		if test.start_time <= cur_time and test.end_time >= cur_time:
+		if test.start_time <= cur_time and test.end_time >= cur_time and role == 'teacher':
 			messages.info(request, 'Edit, delete and create options are disabled as the test has started')
-		elif test.end_time <= cur_time:
+		elif test.end_time <= cur_time and role == 'teacher':
 			messages.info(request, 'Edit, delete and create options are disabled as the test has ended')
 
 		# Create pagiation with 5 problems per page
