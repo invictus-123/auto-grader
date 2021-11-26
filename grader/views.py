@@ -184,7 +184,7 @@ def test_view(request, test_link):
 			return HttpResponseRedirect(reverse('index'))
 
 		# Redirect to home page if some other teacher tries to access the test data
-		if problem.test.user != request.user and role == 'teacher':
+		if test.user != request.user and role == 'teacher':
 			return HttpResponseRedirect(reverse('index'))
 
 		# Fetch the data of problems associated with the test
@@ -460,7 +460,7 @@ def create_problem(request, test_link):
 		return HttpResponseRedirect(reverse('test', args = (test_link,)))
 
 	# Redirect to home page if some other teacher tries to access the test data
-	if problem.test.user != request.user and role == 'teacher':
+	if test.user != request.user and role == 'teacher':
 		return HttpResponseRedirect(reverse('index'))
 
 	# If the form is  submitted
@@ -619,7 +619,7 @@ def delete_test(request, test_link):
 	test = Test.objects.get(link = test_link)
 
 	# Redirect to home page if some other teacher tries to access the test data
-	if problem.test.user != request.user and role == 'teacher':
+	if test.user != request.user and role == 'teacher':
 		return HttpResponseRedirect(reverse('index'))
 
 	cur_time = timezone.localtime(timezone.now())
@@ -701,7 +701,7 @@ def edit_test(request, test_link):
 	test = Test.objects.get(link = test_link)
 
 	# Redirect to home page if some other teacher tries to access the test data
-	if problem.test.user != request.user and role == 'teacher':
+	if test.user != request.user and role == 'teacher':
 		return HttpResponseRedirect(reverse('index'))
 
 	cur_time = timezone.localtime(timezone.now())
