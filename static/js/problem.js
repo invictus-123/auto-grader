@@ -93,7 +93,7 @@ function setCaretPosition(ctrl, pos) {
 const clearBtn = document.getElementById('clear-options');
 if(clearBtn) {
     document.getElementById('clear-options').addEventListener('click', function() {
-        ["option1", "option2", "option3", "option4"].forEach(function(id) {
+        ["answer_option1", "answer_option2", "answer_option3", "answer_option4"].forEach(function(id) {
             document.getElementById(id).checked = false;
         });
     });
