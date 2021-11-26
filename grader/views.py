@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -45,6 +46,9 @@ def index(request):
 
 		# Order the tests such that the most recent ones are at the top
 		tests = tests.order_by('-start_time')
+
+		if len(tests) == 0:
+			messages.info(request, 'No tests available')
 
 		# Create pagiation with 5 tests per page
 		page = request.GET.get('page', 1)
@@ -167,7 +171,6 @@ def test_view(request, test_link):
 	Allows teacher to edit test, create and delete problems if the test has not started.
 	Allows students and teachers to view the result if the test is over.
 	"""
-
 	try:
 		test = Test.objects.get(link = test_link)
 		role = UserRole.objects.get(user = request.user).role
@@ -184,9 +187,17 @@ def test_view(request, test_link):
 		# Arrange the problems such that MCQ are at the top, followed by coding problems
 		problems = problems.order_by('-type')
 
+		if len(problems) == 0:
+			messages.info(request, 'No problems available')
+
 		is_teacher = True if role == 'teacher' else False
 		not_started = True if test.start_time > cur_time else False
 		has_ended = True if test.end_time <= cur_time else False
+
+		if test.start_time <= cur_time and test.end_time >= cur_time:
+			messages.info(request, 'Edit, delete and create options are disabled as the test has started')
+		elif test.end_time <= cur_time:
+			messages.info(request, 'Edit, delete and create options are disabled as the test has ended')
 
 		# Create pagiation with 5 problems per page
 		page = request.GET.get('page', 1)

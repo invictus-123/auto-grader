@@ -41,7 +41,20 @@
             </div>
 
         </header>
+
         <div class="container">
+            <div class="space"></div>
+            {% for message in messages %}
+                {% if forloop.counter == 1%}
+                    <div class="space"></div>
+                {% endif %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" style="outline:none;" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
             {% block content %}
 
             {% endblock content %}

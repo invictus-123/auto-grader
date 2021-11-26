@@ -2,10 +2,6 @@
 
 {% block content %}
 
-    <div class="space"></div>
-    {% if has_ended %}
-        <p class="about">The test has ended...</p>
-    {% endif %}
     <a class="btn btn-primary" href="{% url 'index' %}"><i class="fas fa-arrow-left"></i> Back</a>
     {% if is_teacher and not_started %}
         <a class="btn btn-primary" href="{% url 'create-problem' test_link %}"><i class="fas fa-plus"></i> Problem</a>

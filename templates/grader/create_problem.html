@@ -88,7 +88,10 @@
                     <div style="height: 20px;"></div>
 
                     <label for="marks">Marks:</label>
-                    <input type="text" name="marks" id="marks" class="form-control mb-3" required>
+                    <input type="text" pattern="[0-9]*[1-9][0-9]*" title="Marks must be a positive number!" name="marks" id="marks" class="form-control mb-3"
+                    oninvalid="setCustomValidity('Marks must be a positive number!')"
+                    oninput="setCustomValidity('')"
+                    required />
 
                     <div style="height: 20px;"></div>
 
