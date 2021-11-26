@@ -11,6 +11,14 @@ body.my-login-page {
 	font-size: 15px;
 }
 
+.errorlist {
+	list-style-type: none;
+}
+
+.errorlist li {
+	color: red;
+}
+
 .container .row {
 	clear:both
 }
