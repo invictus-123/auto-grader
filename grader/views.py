@@ -726,7 +726,7 @@ def edit_test(request, test_link):
 		# Save the test
 		test.save()
 
-		return HttpResponseRedirect(reverse('index'))
+		return HttpResponseRedirect(reverse('test', args = (test_link,)))
 
 	context = {
 		'title': test.title + ' - Edit',
