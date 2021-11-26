@@ -188,7 +188,7 @@ def test_view(request, test_link):
 		problems = problems.order_by('-type')
 
 		if len(problems) == 0:
-			messages.info(request, 'No problems available')
+			messages.info(request, 'No problems added to this test')
 
 		is_teacher = True if role == 'teacher' else False
 		not_started = True if test.start_time > cur_time else False
