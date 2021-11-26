@@ -198,6 +198,8 @@ def test_view(request, test_link):
 			messages.info(request, 'Edit, delete and create options are disabled as the test has started')
 		elif test.end_time <= cur_time and role == 'teacher':
 			messages.info(request, 'Edit, delete and create options are disabled as the test has ended')
+		elif test.end_time <= cur_time and role == 'student':
+			messages.info(request, 'The test has ended')
 
 		# Create pagiation with 5 problems per page
 		page = request.GET.get('page', 1)
