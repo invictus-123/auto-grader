@@ -11,7 +11,11 @@
                             <h4 class="card-title">Sign In</h4>
                             <form method="POST" class="my-login-validation">
                                 {% csrf_token %}
-
+                                {% if error %}
+                                    <ul class="errorlist">
+                                        <li>{{ error }}</li>
+                                    </ul>
+                                {% endif %}
                                 <label for="username">Username:</label>
                                 <input type="text" name="username" id="username" class="form-control mb-3" placeholder="">
 

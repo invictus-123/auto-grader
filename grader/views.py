@@ -69,6 +69,10 @@ def signin(request):
 	If the user is already logged in, it redirects them to home page.
 	"""
 
+	context = {
+		'title': 'Sign In',
+	}
+
 	# Redirect to home page if already logged in
 	if request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('index'))
@@ -86,10 +90,9 @@ def signin(request):
 			if user.is_active:
 				login(request, user)
 				return HttpResponseRedirect(reverse('index'))
+		else:
+			context['error'] = 'Invalid username or password.'
 
-	context = {
-		'title': 'Sign In',
-	}
 	return render(request, 'grader/signin.html', context=context)
 
 def signup(request):
