@@ -94,20 +94,20 @@
                     <form method="POST" class="my-login-validation">
                         {% csrf_token %}
                         <div class="mcq-option col-lg-6 col-xs-12 form-control">
-                            <input type="radio" name="option" id="option1" value="option1" {% if user_sub %}{% if user_sub.solution == 'option1' %}checked="checked"{% endif %}{% endif %}>
-                            <label for="option1">{{ problem.data.option1 }}</label>
+                            <input type="radio" name="option" id="answer_option1" value="option1" {% if user_sub %}{% if user_sub.solution == 'option1' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="answer_option1">{{ problem.data.option1 }}</label>
                         </div>
                         <div class="mcq-option col-lg-6 col-xs-12 form-control">
-                            <input type="radio" name="option" id="option2" value="option2" {% if user_sub %}{% if user_sub.solution == 'option2' %}checked="checked"{% endif %}{% endif %}>
-                            <label for="option2">{{ problem.data.option2 }}</label>
+                            <input type="radio" name="option" id="answer_option2" value="option2" {% if user_sub %}{% if user_sub.solution == 'option2' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="answer_option2">{{ problem.data.option2 }}</label>
                         </div>
                         <div class="mcq-option col-lg-6 col-xs-12 form-control">
-                            <input type="radio" name="option" id="option3" value="option3" {% if user_sub %}{% if user_sub.solution == 'option3' %}checked="checked"{% endif %}{% endif %}>
-                            <label for="option3">{{ problem.data.option3 }}</label>
+                            <input type="radio" name="option" id="answer_option3" value="option3" {% if user_sub %}{% if user_sub.solution == 'option3' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="answer_option3">{{ problem.data.option3 }}</label>
                         </div>
                         <div class="mcq-option col-lg-6 col-xs-12 form-control">
-                            <input type="radio" name="option" id="option4" value="option4" {% if user_sub %}{% if user_sub.solution == 'option4' %}checked="checked"{% endif %}{% endif %}>
-                            <label for="option4">{{ problem.data.option4 }}</label>
+                            <input type="radio" name="option" id="answer_option4" value="option4" {% if user_sub %}{% if user_sub.solution == 'option4' %}checked="checked"{% endif %}{% endif %}>
+                            <label for="answer_option4">{{ problem.data.option4 }}</label>
                         </div>
                         <p>
                             <button type="submit" id="submit-code" class="submit-code btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
