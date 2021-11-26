@@ -557,7 +557,13 @@ def result(request, test_link):
 
 		# Calculate rank of each student
 		for i in range(len(result)):
-			result[i]['rank'] = i + 1
+			if i == 0:
+				result[i]['rank'] = i + 1
+			else:
+				if result[i]['score'] == result[i - 1]['score']:
+					result[i]['rank'] = result[i - 1]['rank']
+				else:
+					result[i]['rank'] = i + 1
 
 		# Calculate total score
 		total = sum([problem.data['marks'] for problem in problems])
