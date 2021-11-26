@@ -181,6 +181,9 @@ def test_view(request, test_link):
 		problems = Problem.objects.all().filter(test = test)
 		username = request.user.username
 
+		# Arrange the problems such that MCQ are at the top, followed by coding problems
+		problems = problems.order_by('-type')
+
 		is_teacher = True if role == 'teacher' else False
 		not_started = True if test.start_time > cur_time else False
 		has_ended = True if test.end_time <= cur_time else False
