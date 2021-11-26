@@ -28,7 +28,7 @@
 
                         <section class="mb-4">
                             <p class="fs-5 mb-4">
-                                {{ problem.data.statement }}
+                                {{ problem.data.statement|linebreaks }}
                             </p>
                         </section>
                     </article>
@@ -37,13 +37,13 @@
                             $\textbf{Sample Input:}$
                         </p>
                         <p>
-                            {{ problem.data.sample_input }}
+                            {{ problem.data.sample_input|linebreaks }}
                         </p>
                         <p class="fs-5 mb-2">
                             $\textbf{Expected Output:}$
                         </p>
                         <p>
-                            {{ sample_output }}
+                            {{ sample_output|linebreaks }}
                         </p>
 
                     </section>
