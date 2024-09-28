@@ -39,7 +39,7 @@ SECRET_KEY = SECRET_KEY = '6*syjry$%l&*i35t&znnc4ohk5q79l0$&zc+6y$i)niqgdbm$1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.radiant-wildwood-82518.com']
+ALLOWED_HOSTS = ['https://web-production-14cb.up.railway.app/']
 
 
 # Application definition
@@ -144,13 +144,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-
 STATIC_URL = '/static/'
-STATIC_ROOT = STATIC_DIR
-# STATICFILES_DIRS = [
-#     STATIC_DIR,
-# ]
+
+if DEBUG:
+    STATICFILES_DIRS = [
+        STATIC_DIR,
+    ]
+else:
+    STATIC_ROOT = STATIC_DIR
 
 # Media files
 MEDIA_ROOT = MEDIA_DIR
