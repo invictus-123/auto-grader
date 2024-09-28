@@ -93,4 +93,4 @@ The application is fully responsive and is tested on Chrome, Edge, Firefox and O
 * **Database:** SQLite3
 
 ## Deployment
-Heroku link: [https://radiant-wildwood-82518.herokuapp.com/](https://radiant-wildwood-82518.herokuapp.com/)
+Railway link: [https://auto-grader-production.up.railway.app/](https://auto-grader-production.up.railway.app/)
